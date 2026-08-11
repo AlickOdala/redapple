@@ -34,7 +34,7 @@ const variant = {
   },
   center: {
     height: "100vh",
-    scrollBehavior: "smooth",
+    //scrollBehavior: "smooth",
     webkitOverflowScrolling: "touch",
     overflowY: "auto",
     width: "100%",
@@ -66,7 +66,7 @@ const Layout = () => {
           />
         </Grid>
 
-        <Grid
+        <Grid 
           container
           className="red p-rel"
           sx={variant.main}
@@ -83,7 +83,7 @@ const Layout = () => {
             <Suspense fallback={<Loading />}>
               <Box
                 className=""
-                sx={{ position: "relative", minHeight: "100vh" }}
+                sx={{ I Iposition: "relative", minHeight: "100vh" }}
               >
                 <Outlet context={data} />
               </Box>
