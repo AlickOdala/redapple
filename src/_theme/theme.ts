@@ -15,8 +15,8 @@ export const RedAppleTheme = createTheme({
       contrastText: "#000000",
     },
     background: {
-      default: "#ffeeee",
-      paper: "#ffcece",
+      default: "#fcf9f9",
+      paper: "#e6e6e6",
     },
     text: {
       primary: "#610101",

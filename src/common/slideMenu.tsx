@@ -1,16 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Drawer, Paper, Toolbar, Stack, Container } from "@mui/material";
-import { MenuButton } from "./lui/lixmaterial";
+import { HeadText, RecursiveMenu } from "./lui/lixmaterial";
 
 interface Props {
   open: boolean;
+  data: any;
+  setOpen: () => void;
 }
 
-const SlideMenu = ({ open }: Props) => {
-  const [openSlide, setOpenSlide] = useState<false | open>(open);
+const SlideMenu = ({ open, data, setOpen }: Props) => {
+  const assets = data ?? "";
+  const items = {
+    Home: "/",
+    "About Us": "/about",
+    Gallery: "/gallery",
+    "Contact Us": "/contact",
+    "Send Feedback": "/feedback",
+    "Book Now": "/booking",
+    Settings: "/setting",
+    FQs: "/fqs",
+  };
 
   return (
-    <Box onClick={() => setOpenSlide(false)} className="fh">
+    <Box onClick={() => setOpen(!open)} className="fh">
       <Drawer
         open={open}
         variant="temporary"
@@ -20,7 +32,7 @@ const SlideMenu = ({ open }: Props) => {
         }}
       >
         <Paper
-          className="fh"
+          className="fh "
           sx={{
             width: "230px",
             padding: "20% 16px 0",
@@ -28,7 +40,7 @@ const SlideMenu = ({ open }: Props) => {
         >
           <Toolbar />
           <Stack className="" spacing={1}>
-            <MenuButton />
+            <RecursiveMenu item={items} setSlide={setOpen} />
           </Stack>
         </Paper>
       </Drawer>
@@ -40,24 +52,27 @@ const SlideMenu = ({ open }: Props) => {
             xs: "none",
             sm: "block",
           },
-          bgcolor: "background.default",
           height: "100%",
           zIndex: 1000,
         }}
         disableGutters
       >
         <Paper
-          className="debug fh"
+          className=" fh"
           sx={{
             //width:"100%",
             padding: "20% 16px 0",
             display: { xs: "none", md: "block" },
             minHeight: "100%",
+            bgcolor: "transparent",
           }}
         >
           <Toolbar />
+          <Box className="" sx={{ p: 1, bgcolor: "primary.main" }}>
+            <HeadText text="Menu" color="primary.contrastText" />
+          </Box>
           <Stack className="" spacing={1}>
-            <MenuButton />
+            <RecursiveMenu item={items} setSlide={setOpen} />
           </Stack>
         </Paper>
       </Container>

@@ -8,7 +8,10 @@
     "To deliver high-quality photography and videography services which creates unforgettable memories for individuals and businesses.",
     "To continuously improve through innovation and modern technology by promoting creativity and excellence in every project and provide reliable, affordable, and professional services."
   ],
-  "services":{},
+  "services": {
+    "photography": ["wedding"],
+    "videography": ["wedding"],
+    "editing_and_design": ["wedding"]
   },
   "whyChooseUs": [
     "Professional and experienced team",
@@ -69,7 +72,7 @@
         "name": "Whatsapp",
         "url": "http://wa.me/265882576282",
         "action": "Chart",
-        "linkTo": "+265882576282"
+        "linkTo": "265882576282"
       },
       {
         "name": "Call",
@@ -109,10 +112,29 @@
       }
     ]
   },
-  "Location": {
+  "location": {
     "country": "Malawi",
     "city": "Blantyre",
     "town": "Kachere",
     "address": "P.O. Box 282 Blantyre, Kachere"
-  }
+  },
+  "stories": [
+    {
+      "message": "Since our beginning, we have proubly worked with many companies, NGO's, Footbal Clubs and Charity Organizations, Providing creative solutions that tells powerfull stories!"
+    },
+    {
+      "heading": [
+        "Professional Photo Studio",
+        "Mighty Wanderers Presidetial Ball",
+        "Cooperate Events",
+        "FAM Meetings",
+        "Wedding Photography",
+        "Big Sports",
+        "Documentary",
+        "Charity Works",
+        "Accademic Graduation",
+        "New Jersey Unveiling 2026"
+      ]
+    }
+  ]
 }

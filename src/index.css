@@ -71,13 +71,26 @@
 .p-rel {
   position: relative !important;
   overflow: hidden;
-  box-sizing: border-box;
+  box-sizing: border-box !important;
 }
 .p-abs {
   position: absolute !important;
   overflow: hidden;
 }
+.flex {
+  display: flex;
+}
 
+.flex-col {
+  flex-flow: column;
+}
+
+.flex.row {
+  flex-flow: row;
+}
+.wrap {
+  flex-wrap: wrap;
+}
 .x2-box {
   height: 100vw !important;
 }

@@ -1,0 +1,221 @@
+
+// Base input folder containing all image folders
+const imagesRoot = path.join("src", "assets", "images");
+// Base output folder where a parallel tree of webp images will be created
+const outputRoot = path.join("src", "assets", "images_webp");
+
+// Folders (direct children of imagesRoot) to start converting.
+// Each folder will be walked recursively; nested subfolders will be preserved in the output tree.
+const foldersToConvert = ["posters", "flyer"];
+
+const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".tif", ".tiff", ".webp", ".gif"]);
+
+
+//finall finction to convert files
+
+
+async function convertDirectory(inputDir: string, outputDir: string) {
+  if (!fs.existsSync(inputDir)) return;
+
+  const entries = fs.readdirSync(inputDir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const srcPath = path.join(inputDir, entry.name);
+    const destPath = path.join(outputDir, entry.name);
+
+    if (entry.isDirectory()) {
+      await convertDirectory(inputPath);
+      console.log(`File pat exist ${inputPath}`);
+      continue;
+    }
+
+    if (!entry.isFile()) continue;
+
+    const ext = path.extname(entry.name).toLowerCase();
+    if (!imageExtensions.has(ext)) continue;
+
+    // ensure output folder exists
+    if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+
+    const outputFilePath = path.join(outputDir, `${path.parse(entry.name).name}.webp`);
+    try {
+      await convertFile(srcPath, outputFilePath);
+      console.log(`Converted: ${srcPath} -> ${outputFilePath}`);
+    } catch (err) {
+      console.error(`Failed to convert ${srcPath}:`, err);
+    }
+  }
+}
+
+async function convertAll() {
+  for (const folder of foldersToConvert) {
+    const inputFolder = path.join(imagesRoot, folder);
+    const outputFolder = path.join(outputRoot, folder);
+    await convertDirectory(inputFolder, outputFolder);
+  }
+  console.log("All folders converted");
+}
+
+/*
+convertAll().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+*/
+
+
+const ASSETS_BASE_DIR = path.join(process.cwd(), "src", "assets", "images")
+
+const SUPPORTED_EXTENTIONS = [".jpg", ".jpeg", ".png", ".avif"]
+
+//folder creation
+const ensureFolderExist = async (folderPath:string) => {
+  if(!existsSync(folderPath)){
+    await fs.mkdir(folderPath, {recursive: true})
+    console.log(`Creating missing directory ${folderPath}`)
+    return true
+  } 
+}
+
+const processFolderImages = async(serciveFolderPath: string)=>{
+
+  const webpFolderPath = path.join(serciveFolderPath, "webp");
+  await ensureFolderExist(webpFolderPath) // using function for creating folders
+
+  //reafing all files
+  const files = await fs.readdir(webpFolderPath, {withFileTypes: true})
+
+for (const file of files){
+  if(file.isDirectory) continue
+
+  const fileName = file.name;
+  const fileExt = path.extname(fileName).toLowerCase()
+  const fileNameWithoutExt = path.basename(fileName, fileExt)
+
+  //filter supported format
+  if(!SUPPORTED_EXTENTIONS.includes(fileExt)) continue
+
+  const sourcePath = path.join(serciveFolderPath, fileName)
+  const targetWebpPath = path.join(webpFolderPath, `${fileNameWithoutExt}.webp`);
+
+  //converting images to webp
+  if(!existsSync(targetWebpPath)){
+    try{
+      console.log(`Converting: ${fileName} -> webp/${fileNameWithoutExt}.webp`)
+
+      await sharp(sourcePath).resize({ width: 1200, withoutEnlargement: true }).webp({ quality: 80 }).toFile(targetWebpPath);
+
+    } catch (err: unknown) {
+      console.log(`Fail to convert ${fileName}`, err.message as Error)
+    }
+  }else {
+  console.log(`File Already converted: webp/${fileNameWithoutExt}.webp`)
+  }
+} 
+
+}
+
+const assetProcessing = async () => {
+  console.log('Starting File System Scan and asset optimization....\n')
+
+
+  try{
+    await ensureFolderExist(ASSETS_BASE_DIR)
+    const categoryEntries = await fs.readdir(ASSETS_BASE_DIR, {withFileTypes:true})
+
+    for (const categortEntry of categoryEntries){
+      if(!categortEntry.isDirectory()) continue
+
+      const categoryName = categortEntry.name
+      const categoryFolderPath = path.join(ASSETS_BASE_DIR, categoryName)
+      console.log(`Scanning category: [${categoryName}]`)
+
+      const serviceEntries = await fs.readdir(categoryFolderPath, {withFileTypes:true})
+
+      for(const serviceEntry of serviceEntries){
+        if(!serviceEntry.isDirectory()) continue
+
+        const serviceName = categortEntry.name
+        const serviceFolderPath = path.join(ASSETS_BASE_DIR, serviceName)
+        console.log(`Scanning category: [${serviceName}]`)
+
+        await processFolderImages(serviceFolderPath)
+      }
+      
+    } 
+    console.log(`\n All assets directories  verified and images processing successfully!`)
+  } catch (err){
+  console.log('Critiical processing Error', err.message)
+  }
+}
+
+assetProcessing()
+
+
+const ensureFolderExist = async (folderPath:string) => {
+    fs.mkdir(folderPath, { recursive: true });
+    console.log(`Creating missing directory ${folderPath}`)
+} 
+
+const convertImageToWebp = async ({sourcePath, targetPath}:{sourcePath:string; targetPath:string}) => {
+  try{
+    await sharp(sourcePath, {failOnError: false, limitInputPixels:false, sequentialRead: true}).resize({ width: 1200, withoutEnlargement: true }).webp({ quality: WEBP_QAULITY, effort:4 }).toFile(targetPath);
+    return true
+  } catch(err){
+    console.log(`Faild: ${path.basename(sourcePath)} - ${err.message}`)
+    return false
+  }
+}
+  const shouldConvert = async ({sourcePath, targetPath}:{sourcePath:string; targetPath:string}) => {
+    try{
+      const [sourceStat, targetStat] = await Promise.all([
+        fs.stat(sourcePath),
+        fs.stat(targetPath).catch(()=> null)
+      ])
+    } catch{
+      return true
+    }
+  }
+
+  const run = async () => {
+    console.log("Starting Asset PipeLine from assets data...\n")
+    let totalConverted = 0
+
+    for (const category of assets){
+      const categoryPath = path.join(ASSETS_BASE_DIR, category.slug)
+      await ensureFolderExist(categoryPath)
+      console.log(`Category: ${category.name}`)
+
+      for(const service of category.services){
+        const servicePath = path.join(categoryPath, service.slug)
+        const webpPath = path.join(servicePath, "webp")
+
+        await ensureFolderExist(servicePath)
+        await ensureFolderExist(webpPath)
+
+        console.log(`service: ${service.name}`)
+
+        const files = await fs.readdir(servicePath, {withFileTypes:true})
+
+        for(const file of files){
+          if(file.isDirectory()) continue
+
+          const fileExt = path.extname(file.name).toLowerCase()
+          if(!SUPPORTED_EXTENTIONS.includes(fileExt)) continue
+
+          const sourcePath = path.join(servicePath, file.name)
+          const targetName = `${path.parse(file.name).name}.webp`
+          const targetPath = path.join(webpPath, targetName)
+
+          if(await shouldConvert(sourcePath, targetPath)) {
+            console.log(`Converting: ${file.name} -> wepb/${targetName}`)
+            const success = await convertImageToWebp(sourcePath, targetPath)
+            if(success) totalConverted++
+          }
+        }
+      }
+    }
+console.log(`\n Done! Converted ${totalConverted}`)
+  }
+
+  run().catch(console.error)

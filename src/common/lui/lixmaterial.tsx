@@ -12,6 +12,11 @@ import {
   CardContent,
   IconButton,
   styled,
+  CircularProgress,
+  Dialog,
+  Input,
+  ImageListItem,
+  Skeleton,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
@@ -28,32 +33,39 @@ import {
   LocationOn,
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
+import { Image } from "mui-image";
+import useScrollTrigger from "@mui/material/useScrollTrigger";
+import Slide from "@mui/material/Slide";
+import { useNavigate, useNavigation } from "react-router-dom";
+import RedAppleName from "./redapplename";
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+import image from "../../assets/webuse/loading/loading.webp";
 
-const data = {
-  Galley: {
-    poster: ["Poster", "WEdding"],
-    Fllyer: ["Promo", "wan"],
-    FeedBack: {
-      google: ["5 ster rewviw", "Birthday"],
-      instagram: ["love the photos"],
-    },
-  },
-  Settings: "0",
-  Services: {
-    Photograohy: ["wedding", "Portraits"],
-  },
-};
-
-const RecursiveMenu = ({ items }: { items: string }) => {
+export const RecursiveMenu = ({
+  item,
+  setSlide,
+}: {
+  item: any;
+  setSlide?: () => void;
+}) => {
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({});
+  const menuList = item ?? "";
+  const [shed, setShed] = useState(null);
 
   const handleClick = (key: string) => {
     setOpenItems((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
+  const navigate = useNavigate();
+  const hundleNavigate = (value: any) => {
+    navigate(value);
+    setSlide(false);
+  };
+
   return (
     <List disablePadding>
-      {Object.entries(items).map(([key, value]) => {
+      {Object.entries(menuList).map(([key, value]) => {
         const isObject = typeof value === "object" && value !== null;
         const isOpen = openItems[key]; //
 
@@ -63,39 +75,30 @@ const RecursiveMenu = ({ items }: { items: string }) => {
               <ListItemButton
                 onClick={() => handleClick(key)}
                 sx={{
-                  //bgcolor: "secondary.main",
-                  //color: "primary.main",
                   borderBottom: "0.5px solid grey",
                 }}
               >
                 <ListItemIcon>
                   {isOpen ? <ExpandLess /> : <ExpandMore />}
                 </ListItemIcon>
-                <ListItemText
-                  primary={key}
-                  sx={{
-                    color: "",
-                    "&.MuiListItemText-root": {
-                      fontWeight: "bolder",
-                    },
-                  }}
-                />
+                <ListItemText primary={key} />
               </ListItemButton>
 
               <Collapse key={key} in={isOpen} timeout="auto" unmountOnExit>
                 <List disablePadding className="">
-                  {Object.keys(value).map((item) => (
+                  {value.map((item) => (
                     <ListItemButton
                       sx={{
-                        //color: "primary.main",
-                        //bgcolor: "background.default",
+                        //color: "primary.contrastText",
+                        bgcolor: "text.secondary",
                         //fontSize: "11px !important",
                         padding: "0 0 0 60px",
+                        margin: "2px !important",
                       }}
                     >
                       <ListItemText
                         sx={{
-                          fontSize: "11px !important",
+                          fontSize: "8px !important",
                         }}
                         primary={item}
                         //onClick={() => setOpenItems({})}
@@ -109,16 +112,24 @@ const RecursiveMenu = ({ items }: { items: string }) => {
         }
         if (!isObject) {
           return (
-            <Stack className="">
+            <Stack className="" key={key}>
               <ListItemButton
+                onClick={() => setShed(key ? key : null)}
                 sx={{
-                  //bgcolor: "secondary.main",
-                  //color: "primary.main",
+                  bgcolor: shed === key ? "primary.main" : "transparent",
                   borderBottom: "0.5px solid grey",
                 }}
               >
                 <ListItemIcon />
-                <ListItemText primary={key} />
+                <ListItemText
+                  sx={{
+                    color: "text.secondary",
+                    fontWeight: "bolder",
+                    "& .MuiListItemText": {},
+                  }}
+                  primary={key}
+                  onClick={() => hundleNavigate(value)}
+                />
               </ListItemButton>
             </Stack>
           );
@@ -225,9 +236,9 @@ export const HeadText = ({
         className=""
         sx={{
           textAlign: `${center && "center"}`,
-          fontSize: `${!fs ? "40" : fs}px`,
+          fontSize: `${!fs ? "20" : fs}px`,
           fontWeight: "bolder",
-          color: color,
+          color: !color ? "text.secondary" : color,
           lineHeight: 1,
         }}
       >
@@ -243,12 +254,14 @@ export const TextContext = ({
   fs,
   className,
   center,
+  color,
 }: {
   text: string;
   fs?: number;
   sx?: any;
   className?: string;
   center?: boolean;
+  color?: string;
 }) => {
   return (
     <Box className={className} sx={sx}>
@@ -256,7 +269,8 @@ export const TextContext = ({
         sx={{
           textAlign: `${center && "center"}`,
           lineHeight: 1,
-          fontSize: { xs: `${fs ? fs : "12"}px`, sm: `${fs ? fs : "18"}px` },
+          fontSize: { xs: `${!fs ? "16" : fs}px`, sm: `${fs ? fs : "18"}px` },
+          color: !color ? "text.secondary" : color,
         }}
       >
         {text}
@@ -272,6 +286,7 @@ export const TextIcon = ({
   icon,
   onClick,
   className,
+  type,
 }: {
   rootProp?: {};
   textProp?: {};
@@ -279,22 +294,50 @@ export const TextIcon = ({
   onClick?: () => void;
   className?: any;
   text?: string;
+  type?: string;
 }) => {
   return (
     <Box className={className} onClick={onClick} sx={rootProp}>
-      <IconButton className="" sx={textProp}>
+      <IconButton className="" sx={textProp} type={type}>
         {text} {icon}
       </IconButton>
     </Box>
   );
 };
 
-export const BackgroundImage = styled(Box)({
-  backgroundImage: "url(/images/bg.jpg)",
-  backgroundSize: "cover",
-  backgroundPosition: "top",
-  backgroundRepeat: "no-repeat",
-});
+interface BackgroundImageProp {
+  image: string;
+  filter?: string;
+  parallax?: boolean;
+  overlay?: number;
+}
+
+export const BackgroundImage = styled(Box)<BackgroundImageProp>(
+  ({ image, filter, parallax, overlay = 0.5 }) => ({
+    position: "relative",
+    backgroundColor: "transparent",
+    zIndex: 0,
+    "&::before": {
+      content: '""',
+      position: "absolute",
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, ${overlay}), transparent ,rgba(67, 67, 67, ${overlay})), url(${image})`,
+      backgroundSize: "cover",
+      backgroundPosition: "top",
+      backgroundRepeat: "no-repeat",
+      backgroundAttachment: !parallax ? "fixed" : "scroll",
+      filter: filter || "none",
+      zIndex: -1,
+    },
+    "& > *": {
+      position: "relative",
+      zIndex: 1,
+    },
+  }),
+);
 
 export const DataSelector = ({
   toFilter,
@@ -302,49 +345,55 @@ export const DataSelector = ({
   bolder,
 }: {
   toFilter: string;
-  filtered: string;
+  filtered?: () => void;
   bolder: boolean;
 }) => {
   const [filter, setFilter] = useState("");
-  const [onFilter] = useState<string>(toFilter ?? []);
+
+  useEffect(() => {
+    filtered(filter);
+  }, [filter]);
 
   return (
     <Stack
-      className="debug red p-rel"
+      className=" red p-rel"
       sx={{
         alignContent: "center",
         flexWrap: "wrap",
         display: "flex",
         gap: 1,
+        height: 40,
       }}
       direction={"row"}
       spacing={2}
     >
-      <Box className="grow p-rel" sx={{ justifyContent: "end !important" }}>
+      <Box className="p-rel " sx={{ justifyContent: "end !important" }}>
         <Box
           className=""
           sx={{
-            width: "60px",
+            width: "fit-content",
             borderRadius: `${bolder && "50px !important"}`,
             display: "flex",
+            height: "100% !important",
           }}
         >
           <Box
             component="select"
             onChange={(e) => setFilter(e.target.value)}
-            value={"Filter"}
+            value={!filter ? "Service Categories" : filter}
             sx={{
               bgcolor: "transparent",
               color: "text.secondary",
               fontSize: "11px",
-              maxWidth: "50px",
               outline: "unset !important",
               border: "none",
-              height: "100%",
             }}
           >
-            <Box component={"option"}>{"Filter"}</Box>
-            {onFilter.map((cat) => (
+            {/* <Box component={"option"}>
+              {filter === "All" ? setFilter("") : "All"}
+            </Box>*/}
+
+            {Object.values(toFilter).map((cat) => (
               <Box component={"option"} key={cat} value={cat}>
                 {cat}
               </Box>
@@ -352,15 +401,17 @@ export const DataSelector = ({
           </Box>
         </Box>
       </Box>
-      <Box className=" grow">
+      <Box className="  right">
         <Typography
+          className=""
+          onClick={() => setFilter(!filter)}
           sx={{
             fontSize: "11px",
             fontWeight: "bolder",
             textAlign: { sm: "center" },
           }}
         >
-          View {filter} Photos
+          {"Filter By Services"}
         </Typography>
       </Box>
     </Stack>
@@ -372,46 +423,50 @@ export const ContactItem = ({
   name,
   linkTo,
   text,
+  index,
 }: {
   link?: string;
   name?: String;
   linkTo?: string;
   text?: string;
+  index: number;
 }) => {
   const variant = {
     container: {
+      height: 50,
+      boxSizing: "bolderBox",
+      position: "relative",
+      px: 1,
       display: "flex",
-      lineHeight: 1,
-      //margin: "4px !important",
-      width:'100% !important',
+      boxShadow: 3,
       borderRadius: "8px",
-        boxShadow: "0 0 4px #1212123c",
-        padding:'2px !important'
-      
+      color: "text.secondary",
     },
 
     icon: {
-      transform: "scale(0.8)",
+      transform: "scale(1.5)",
+      margin: "auto !important",
     },
     a: {
       textDecoration: "none !important",
       color: "inherit !important",
       outline: "unsert",
-      height: "10px ",
+      height: "12px ",
       padding: "0 !important",
       margin: "auto !important",
-      fontSize: "12px",
+      fontSize: "18px",
       fontWeight: "bolder",
       border: "unsert !important",
     },
     text: {
       fontWeight: "small !important",
-      fontSize: "8px",
+      fontSize: "14px",
       padding: "0 8px",
       fontStyle: "italic",
     },
   };
 
+  const navigate = useNavigation();
   const icon = {
     whatsapp: <WhatsApp sx={variant.icon} />,
     call: <Call sx={variant.icon} />,
@@ -421,44 +476,76 @@ export const ContactItem = ({
     instagram: <Instagram sx={variant.icon} />,
     location: <LocationOn sx={variant.icon} />,
   };
+  const hundleLicks = (name: string) => {
+    console.log("name", name);
+  };
 
   return (
-    <Box className="" sx={variant.container}>
-      <Box className="">{icon[name.toLocaleLowerCase()]}</Box>
-      <Box className="">
+    <LandingPage>
+      <Box key={index} className=" p-rel" sx={variant.container}>
         <Box
-          component={"a"}
-          href={link}
-          className=" p-rel"
-          sx={variant.a}
-          target="_blank"
-          rel="noopener noreferrer"
+          className=" red center-items"
+          sx={{
+            aspectRatio: 1 / 1,
+            height: "100%",
+            boxSizing: "bolder-box",
+            display: "flex",
+          }}
         >
-          {name}
-          <Box className="" component={"span"} sx={variant.text}>
-            Click to {text}
+          {icon[name.toLocaleLowerCase()]}
+        </Box>
+        <Box className=" grow" sx={{ pb: 1 }}>
+          <Box
+            component={"a"}
+            href={link}
+            className=" p-rel"
+            sx={variant.a}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {name}
+          </Box>
+          <Box
+            className=""
+            sx={{
+              display: "flex",
+              width: "100% !important",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography
+              className=""
+              sx={{ fontWeight: "bold", fontSize: "12px" }}
+            >
+              {name?.toLowerCase() === "whatsapp".toLowerCase() ? text : linkTo}
+            </Typography>
           </Box>
         </Box>
-
-        <Typography className=" " sx={{ fontWeight: "bold", fontSize: "10px" }}>
-          {linkTo}
-        </Typography>
       </Box>
-    </Box>
+    </LandingPage>
   );
 };
+/**
+ * 
+       
+ */
 
-export const TileContactItem = ({ data }: { data: any }) => {
+//====================================================================================
+// .tile Contacts
+//====================================================================================
+export const TileContactItem = ({ i, item }: { item: string; i: number }) => {
   const variant = {
     tile: {
       height: 120,
       width: 120,
       alignItems: "center",
       borderRadius: "4px",
-      bgcolor: "grey.50",
-      color: "secondary.contrastText",
+      bgcolor: "primary.main",
+      color: "primary.contrastText",
       padding: "8px 8px 16px",
       zIndex: 10,
+      textDecoration: "none !important",
+      outLine: "none",
     },
     icon: {
       transform: "scale(2)",
@@ -476,60 +563,50 @@ export const TileContactItem = ({ data }: { data: any }) => {
 
   return (
     <>
-      {data.slice(0, 4).map((item, i) => (
-        <motion.div
-          key={i}
-          initial={{ x: -40 }}
-          whileInView={{ x: 0 }}
-          transition={{
-            duration: 0.4 * i,
-            delay: 0.3,
-          }}
+      <motion.div
+        key={i}
+        initial={{ x: -40 }}
+        whileInView={{ x: 0 }}
+        transition={{
+          duration: 0.4 * i,
+          delay: 0.3,
+        }}
+        viewport={{ once: true }}
+      >
+        <Box
+          component="a"
+          className="p-rel 
+            center-items"
+          sx={variant.tile}
+          href={item.url}
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <Box
-            className="p-rel 
-          center-items"
-            sx={variant.tile}
-            component={"a"}
-            href={item.link}
+            className=" center-items"
+            sx={{
+              height: "60%",
+              width: "60%",
+              alignItems: "center",
+              display: "flex",
+            }}
           >
-            <Box
-              className=" center-items"
+            {icon[item.name.toLowerCase()]}
+          </Box>
+          <Box className=" red center-items" sx={{ lineHieght: 1 }}>
+            <Typography
+              className="center-self"
               sx={{
-                height: "60%",
-                width: "60%",
-                alignItems: "center",
-                display: "flex",
+                lineHieght: 0.5,
+                fontSize: "8px",
+                fontWeight: "bolder",
               }}
             >
-              {icon[item.name.toLowerCase()]}
-            </Box>
-            <Box className=" center-items" sx={{ lineHieght: 1 }}>
-              <Typography
-                className="center-self"
-                sx={{
-                  lineHieght: 0.5,
-                  fontSize: "11px",
-                  fontWeight: "bolder",
-                  textAlign: "center",
-                }}
-              >
-                {item.linkTo}
-              </Typography>
-              <Typography
-                className="center-self"
-                sx={{
-                  lineHieght: 0.5,
-                  fontSize: "8px",
-                  fontWeight: "bolder",
-                }}
-              >
-                Click to {item.action}
-              </Typography>
-            </Box>
+              Click to {item.action}
+            </Typography>
           </Box>
-        </motion.div>
-      ))}
+        </Box>
+      </motion.div>
     </>
   );
 };
@@ -576,7 +653,7 @@ export const FfpNavList = () => {
           key={link.id}
           component={"a"}
           href={link.id}
-          className="debug p-rel"
+          className=" p-rel"
           target="_self"
           sx={{
             height: "fit-content",
@@ -614,7 +691,7 @@ export const FfpNavList = () => {
 
 export const TextContentbillets = ({ text }: { text?: any }) => {
   return (
-    <Stack className="debug" sx={{ p: 1 }}>
+    <Stack className="" sx={{ p: 1 }}>
       {Object.values(text ?? "").map((item, i) => (
         <motion.div
           initial={{ x: -40, opacity: 0 }}
@@ -625,7 +702,7 @@ export const TextContentbillets = ({ text }: { text?: any }) => {
           viewport={{ once: true }}
         >
           <Box
-            className="debug"
+            className=""
             key={i}
             sx={{
               display: "flex",
@@ -673,5 +750,326 @@ export const TextContentbillets = ({ text }: { text?: any }) => {
         </motion.div>
       )) ?? ""}
     </Stack>
+  );
+};
+
+export const HideOnScroll = ({
+  children,
+  target,
+}: {
+  children: React.ReactElement;
+  target: any;
+}) => {
+  const trigger = useScrollTrigger({
+    target,
+  });
+  return (
+    <Slide appear={false} direction="down" in={!trigger}>
+      {children}
+    </Slide>
+  );
+};
+
+export const Loading = () => {
+  const [open, setOpen] = useState(true);
+  return (
+    <Dialog
+      open={open}
+      fullScreen
+      sx={{
+        "& .MuiDialog-paper": {
+          // bgcolor: "transparent",
+          //color: '"primary.main',
+        },
+      }}
+    >
+      <Box className="vh center-items">
+        <Box
+          className=" center-self center-items"
+          sx={{ width: "60% !important", display: "flex", gap: 1 }}
+        >
+          <RedAppleName center={true} />
+          <TextContext center text="Creative Media" />
+          <Box className="center-self">
+            <CircularProgress sx={{ transform: "scale(0.5)" }} />
+          </Box>
+        </Box>
+
+        <Box
+          className=" p-abs"
+          sx={{
+            height: 130,
+            // clipPath: "polygon(0 50%, 100% 0, 100% 50%, 0% 100%)",
+            //bgcolor: "primary.main",
+            color: "primary.contrastText",
+            bottom: 20,
+            width: "100%",
+          }}
+        >
+          <HeadText text="Loading!" fs={12} center />
+        </Box>
+      </Box>
+    </Dialog>
+  );
+};
+
+interface InputProps {
+  inputType: string | undefined;
+  use: string | undefined;
+  value: any | undefined;
+  onChange: () => void | undefined;
+  key: any | undefined;
+  bgcolor: string | undefined;
+}
+
+export const MyInput = ({
+  inputType,
+  use,
+  value,
+  onChange,
+  key,
+  bgcolor,
+}: InputProps) => {
+  const [top, setTop] = useState(false);
+
+  useState(() => {
+    value.length > 0 && setTop(true);
+  });
+  return (
+    <Box
+      className="red center-items"
+      sx={{
+        height: "100%",
+        borderRadius: "50px",
+        bgcolor: !bgcolor ? "background.paper" : bgcolor,
+        padding: "0 16px",
+        "&:focus-within .placeholder": {
+          transform: "translateY(-100%) ",
+          border: "1px solid background.paper",
+          bgcolor: "background.default",
+          fontSize: "8px !important",
+          filter: "opacity(1)",
+          padding: "0px 10px",
+          margin: "0 0 0 2% !important",
+        },
+        "&:active-within .placeholder": {
+          display: "none",
+        },
+      }}
+    >
+      <Typography
+        className="placeholder"
+        sx={{
+          fontSize: !value ? "10px !important" : "8px !important",
+          position: "absolute",
+          width: "fit-content",
+          borderRadius: "50px",
+          filter: !value ? "opacity(0.2)" : "opacity(1)",
+          textAlign: "center !important",
+          transitionDuration: "0.3s",
+          transitionBehavior: "ease-in-out",
+          transform: value && "translateY(-100%) ",
+          border: value && "1px solid background.paper",
+          bgcolor: value && "background.default",
+          padding: value && "0px 10px",
+        }}
+      >
+        {use}
+      </Typography>
+      <Box className="p-rel focus" sx={{ display: "block", height: "100%" }}>
+        <Input
+          type={inputType}
+          value={value}
+          onChange={onChange}
+          sx={{
+            fontSize: " 12px !important",
+            width: "100% !important",
+            height: "110% !important",
+          }}
+        />
+      </Box>
+    </Box>
+  );
+};
+
+export const ActionButton = ({
+  text,
+  onClick,
+  bgcolor,
+}: {
+  text: string;
+  onClick?: () => void;
+  bgcolor?: string;
+}) => {
+  return (
+    <Box
+      className="center-self p-rel"
+      sx={{
+        width: "fit-content",
+        borderRadius: "50px !important",
+        height: "100%",
+        boxShadow: 3,
+        bgcolor: !bgcolor ? "primary.main" : bgcolor,
+      }}
+    >
+      <IconButton
+        onClick={onClick}
+        sx={{
+          fontSize: "12px",
+          fontWeight: "bolder",
+          //color: "secondary.main",
+          color: !bgcolor ? "primary.contrastText" : "text.secondary",
+        }}
+      >
+        {text}
+      </IconButton>
+    </Box>
+  );
+};
+
+interface MediaItem {
+  group: {
+    id: string;
+    name: string;
+    ext: string;
+    src: string;
+  };
+}
+
+export const LuiImage = ({
+  src,
+  srcset,
+  i,
+  key,
+  ratio,
+  cover,
+}: {
+  src: MediaItem[];
+  srcset?: MediaItem[];
+  i: number;
+  key?: string | number;
+  ratio?: number;
+  cover?: boolean;
+}) => {
+  const [load, setLoad] = useState(false);
+  const [index, setIndex] = useState(-1);
+
+  const slides = srcset
+    .filter((itm) => itm.ext === "webp")
+    .map((itm) => ({ src: itm.src }));
+
+  return (
+    <Box
+      key={key}
+      className=" p-rel"
+      sx={{ borderRadius: "4px", marginBottom: "8px !important" }}
+    >
+      <ImageListItem key={src.id} className="p-rel">
+        <Box
+          className=" p-rel"
+          sx={{
+            aspectRatio: !ratio ? "none" : ratio,
+            objectFit: "fill",
+            objectPosition: "top",
+            width: "100% !important",
+            display: "flex",
+            minHeight: !load && "90px",
+            bgcolor: "#2d2c2c31",
+          }}
+        >
+          {!load && (
+            <Skeleton variant="rectangular" width="100%" height="100%" />
+          )}
+          <Image
+            key={src.id}
+            src={src.src}
+            loading="lazy"
+            decoding="async"
+            onLoad={() => setLoad(true)}
+            sx={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              opacity: load[src.id] ? 1 : 0,
+              transition: "opacity 0.3s",
+            }}
+            onClick={() => setIndex(i)}
+          />
+        </Box>
+      </ImageListItem>
+
+      <Lightbox
+        open={index >= 0}
+        index={index}
+        close={() => setIndex(-1)}
+        slides={slides}
+        carousel={{ finite: false }}
+        controller={{ closeOnBackDropClick: true }}
+      />
+    </Box>
+  );
+};
+
+interface BgWraperProps {
+  bgImage: string;
+  children: React.ReactNode;
+  overlay?: number;
+  blur?: number;
+  parallax?: boolean;
+}
+export const BgWrapper = ({
+  bgImage,
+  children,
+  overlay = 0.5,
+  blur = 0,
+  parallax = false,
+}: BgWraperProps) => {
+  return (
+    <Box sx={{ position: "relative", with: "100%", height: "100%" }}>
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, ${overlay}), transparent ,rgba(67, 67, 67, ${overlay})), url(${bgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundAttachment: parallax ? "fixed" : "scroll",
+          zIndex: -1,
+          borderRadius: "inherit",
+        }}
+      >
+        <Box
+          sx={{
+            position: "relative",
+            zIndex: 100,
+            backdropFilter: `blur(${blur}px)`,
+          }}
+        >
+          {children}
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+interface LandingPAgeProp {
+  children: React.ReactElement;
+}
+export const LandingPage = ({ children }: LandingPAgeProp) => {
+  return (
+    <>
+      <motion.div
+        initial={{ y: -40, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5, type: "spring", damping: 15 }}
+        viewport={{ amount: 0.1, once: true }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 1.1 }}
+      >
+        {children}
+      </motion.div>
+    </>
   );
 };

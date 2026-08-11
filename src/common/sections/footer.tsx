@@ -3,43 +3,55 @@ import React, { useEffect, useState } from "react";
 import { HeadText, TextContext, TextIcon } from "../lui/lixmaterial";
 Collapse;
 const Footer = ({ data }: { data?: any }) => {
-  const { feedback, faq } = data ?? "";
-  useEffect(() => {});
+  const { feedback, faq, location } = data ?? "";
+;
 
   return (
-    <Container
+    <Box
       className="p-rel"
       sx={{
-        height: "60vh",
+        height: "80vh",
         bgcolor: "grey.200",
-        color: "secondary.main",
+        color: "primary.contrastText",
         gap: "10px",
+        px: 2,
       }}
     >
       <Grid container className=" fh" spacing={2} sx={{ padding: "8% 0 0" }}>
-        <Grid
-          className=""
-          size={{ xs: 12, sm: 4 }}
-          sx={{ height: "20%", p: 1 }}
-        >
+        <Grid className="" size={{ xs: 12, sm: 4 }} sx={{ height: "20%" }}>
           <Feedback feedback={feedback} />
         </Grid>
         <Grid
           className=""
           size={{ xs: 12, sm: 4 }}
-          sx={{ height: "auto", p: 1, maxHeight: "fit-content !important" }}
+          sx={{ height: "auto", maxHeight: "fit-content !important" }}
         >
           <FQs faq={faq} />
         </Grid>
-        <Grid
-          className=" p-rel center-items"
-          size={{ xs: 12 }}
-          sx={{ height: "20%" }}
-        >
+        <Grid className=" p-rel" size={{ xs: 12 }} sx={{ height: "20%" }}>
+          <Box className="">
+            <Box className="">
+              <HeadText
+                fs={12}
+                text={"Location"}
+                color="primary.contrastText"
+              />
+            </Box>
+            <Box
+              className=""
+              sx={{ display: "flex", flexWrap: "wrap", columnGap: 1 }}
+            >
+              {Object.values(location).map((item, i) => (
+                <Typography key={i} sx={{ fontSize: "10px" }}>
+                  {item},
+                </Typography>
+              ))}
+            </Box>
+          </Box>
           <Developer />
         </Grid>
       </Grid>
-    </Container>
+    </Box>
   );
 };
 
@@ -54,8 +66,8 @@ const Feedback = ({ feedback }: { feedback?: any }) => {
         gap: "8px",
       }}
     >
-      <HeadText fs={12} text={"FeedBack"} />
-      <TextContext fs={9} text={feedback ?? ""} />
+      <HeadText text={"FeedBack"} color="primary.contrastText" />
+      <TextContext fs={12} text={feedback ?? ""} color="primary.contrastText" />
     </Box>
   );
 };
@@ -66,10 +78,14 @@ const FQs = ({ faq }: { faq: string }) => {
 
   return (
     <Box className=" p-rel center-self" sx={{ padding: "8px 0" }}>
-      <HeadText fs={12} text={"FQs"} />
+      <HeadText text={"FQs"} color="primary.contrastText" />
       <Box className="p-rel">
-        <TextContext fs={9} sx={{ padding: "8px 4px" }} text={cta} />
-        <Typography></Typography>
+        <TextContext
+          fs={12}
+          sx={{ padding: "8px 4px" }}
+          text={cta}
+          color="primary.contrastText"
+        />
         {(question ?? []).map((item) =>
           Object.entries(item).map(([key, value]) => (
             <Collapse
@@ -101,7 +117,7 @@ const FQs = ({ faq }: { faq: string }) => {
                   </Typography>
                 </Box>
                 <Box className="">
-                  <Typography sx={{ fontSize: "8px", padding: "0 2px" }}>
+                  <Typography sx={{ fontSize: "9px", padding: "0 2px" }}>
                     {value}
                   </Typography>
                 </Box>
@@ -111,7 +127,7 @@ const FQs = ({ faq }: { faq: string }) => {
         )}
       </Box>
       <Box
-        className="debug p-rel"
+        className=" p-rel"
         sx={{
           bgcolor: "secondary.main",
           color: "secondary.contrastText",
@@ -138,8 +154,18 @@ const Developer = () => {
       onClick={() => ""}
     >
       <Box className=" " sx={{ bottom: 20, left: 16 }}>
-        <TextContext center fs={7} text={develperInfo} />
-        <TextContext center fs={7} text={"All Right reserved"} />
+        <TextContext
+          center
+          fs={8}
+          text={develperInfo}
+          color="primary.contrastText"
+        />
+        <TextContext
+          center
+          fs={9}
+          text={"All Right reserved"}
+          color="primary.contrastText"
+        />
       </Box>
     </Box>
   );

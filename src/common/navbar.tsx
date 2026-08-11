@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import {
   AppBar,
   Box,
@@ -7,9 +7,10 @@ import {
   IconButton,
   Stack,
   Typography,
+  Paper,
 } from "@mui/material";
 
-import react, { useEffect } from "react";
+import react, { useEffect, useState } from "react";
 
 import {
   Photo,
@@ -22,72 +23,125 @@ import {
 } from "@mui/icons-material";
 
 import { BrowseGallery } from "@mui/icons-material";
+import { NavLink, useNavigate } from "react-router-dom";
+import RedAppleName from "./lui/redapplename";
+import { HideOnScroll } from "./lui/lixmaterial";
+import { Image } from "mui-image";
+import logo from "../assets/webuse/logo/";
 
 interface NavbarProps {
   setSlideOpen: Dispatch<SetStateAction<boolean>>;
-  setViews: () => void;
+  scrollTarget: any;
+  isSlide: boolean;
 }
 
-const Navbar = ({ setSlideOpen, setViews }: NavbarProps) => {
-  return (
-    <AppBar
-      position="sticky"
-      className="center-items"
-      sx={{
-        zIndex: (theme) => theme.zIndex.drawer + 1,
-        bgcolor: "secondary.main",
-        height: "9%",
-        color: "secondary.contrastText",
-      }}
-    >
-      <Toolbar
-        className="red center-items p-rel"
-        sx={{
-          flexFlow: "column",
-          justifyContent: "space-between",
-          height: "fit-content !important",
-          padding: "8px",
-        }}
+const variant = {
+  appbar: {
+    zIndex: (theme) => theme.zIndex.drawer + 1,
+    bgcolor: "background.default",
+    color: "secondary.contrastText",
+    boxShadow: "none !important",
+    backdropFilter: "blur(5px) grayscale(50)",
+    // display:'none'
+  },
+  toolbar: {
+    flexFlow: "column",
+    justifyContent: "space-between",
+    height: "fit-content !important",
+    px: 2,
+  },
+};
+const Navbar = ({ setSlideOpen, scrollTarget, isSlide }: NavbarProps) => {
+  const navigate = useNavigate();
+  try {
+    return (
+      <HideOnScroll target={scrollTarget}>
+        <AppBar position="fixed" className="" sx={variant.appbar}>
+          <Toolbar
+            className="redp-rel p-rel center-items "
+            sx={variant.toolbar}
+          >
+            <Stack
+              className=" fh p-rel"
+              sx={{ width: "100%", height: "8vh !important", py: 1 }}
+              spacing={1}
+              direction={"row"}
+            >
+              <Box className=" grow" sx={{ display: "flex" }}>
+                <RedAppleName fs={18} logo />
+              </Box>
+              <Box className=" grow center-items">
+                <Box className="right">
+                  <IconButton
+                    className="center-self"
+                    onClick={() => {
+                      setSlideOpen(!isSlide);
+                    }}
+                  >
+                    {!isSlide ? (
+                      <Menu
+                        sx={{
+                          transform: "scale(1)",
+                          margin: "auto margin:'auto !important",
+                        }}
+                      />
+                    ) : (
+                      <ArrowForward
+                        sx={{
+                          transform: "scale(1)",
+                          margin: "auto !important",
+                        }}
+                      />
+                    )}
+                  </IconButton>
+                </Box>
+              </Box>
+            </Stack>
+          </Toolbar>
+        </AppBar>
+      </HideOnScroll>
+    );
+  } catch (e: unknown) {
+    console.error(e);
+    return (
+      <Paper
+        sx={{ margin: "50% 20%  !important" }}
+        className="self-center p-abs text"
       >
-        <Bottombar setSlideOpen={setSlideOpen} setViews={setViews} />
-      </Toolbar>
-    </AppBar>
-  );
+        {" "}
+        Something Went wrong:{(e as Error).message}
+      </Paper>
+    );
+  }
 };
 
-const Bottombar = ({ setSlideOpen, setViews }: NavbarProps) => {
+export default Navbar;
+
+/**
+ * const Bottombar = ({ setSlideOpen }: NavbarProps) => {
   const [click, setClick] = useState("");
   const [menu, setMenu] = useState(false);
 
-  useEffect(() => {});
-
   const navItem = [
-    { name: "Home", icon: <Home />, click: () => setViews(null) },
+    { name: "Home", icon: <Home />, link: "/" },
     {
       name: "menu",
       icon: <Menu sx={{ transform: "scale(1)" }} />,
-      click: () => {
-        setMenu(true);
-        setSlideOpen(true);
-      },
+      link: () => setSlideOpen(true),
     },
     {
       name: "forward arrow",
       icon: <ArrowForward sx={{ transform: "scale(1)" }} />,
-      click: () => {
-        setMenu(false);
-        setSlideOpen(false);
-      },
     },
     {
       name: "call",
       icon: <Call sx={{ transform: "scale(1)" }} />,
-      click: () => setViews("about"),
+      link: "/contact",
     },
     {
       name: "galley",
       icon: <Photo sx={{ transform: "scale(1)" }} />,
-      click: () => setViews("gallery"),
+      link: "/gallery",
     },
   ];
 
@@ -104,41 +158,18 @@ const Bottombar = ({ setSlideOpen, setViews }: NavbarProps) => {
         gap: 1,
       }}
     >
-      <Box className="" onClick={() => setViews("home")}>
-        <IconButton
-          className=""
-          sx={{
-            padding: "0",
-            "&.MuiIconButton-root": {
-              display: "flex",
-              //fontSize: "8px",
-            },
-          }}
-        >
-          <Typography
-            sx={{
-              fontWeight: "bolder",
-              color: "text.primary",
-            }}
-          >
-            Red
-          </Typography>
-          <Typography
-            sx={{
-              fontWeight: "bolder",
-              color: "text.secondary",
-            }}
-          >
-            Apple
-          </Typography>
-        </IconButton>
+      <Box className="">
+        <RedAppleName />
       </Box>
 
       {navItem.slice(-2).map((icon, i) => (
-        <Box kry={icon.name} className="">
+        <Box component={NavLink} kry={icon.name} to={icon.link} className="">
           <IconButton
             key={icon.name}
-            onClick={() => setClick(icon.name)}
+            onClick={() => {
+              setClick(icon.name);
+              setSlideOpen(icon.link);
+            }}
             sx={{
               padding: "0",
               "&.MuiIconButton-root": {
@@ -158,8 +189,7 @@ const Bottombar = ({ setSlideOpen, setViews }: NavbarProps) => {
       <Box className="grow right">
         {menu ? (
           <IconButton
-            className="debug"
-            onClick={navItem[2].click}
+            className=""
             sx={{
               padding: "0",
               "&.MuiIconButton-root": {
@@ -173,7 +203,6 @@ const Bottombar = ({ setSlideOpen, setViews }: NavbarProps) => {
         ) : (
           <IconButton
             className=""
-            onClick={navItem[1].click}
             sx={{
               padding: "0",
               "&.MuiIconButton-root": {
@@ -189,12 +218,8 @@ const Bottombar = ({ setSlideOpen, setViews }: NavbarProps) => {
     </Stack>
   );
 };
-
-export default Navbar;
-
-/**
  *  <Box
-        className="debug red "
+        className=" red "
         sx={{
           padding: "auto !important",
           alignItems: "center",
@@ -233,12 +258,12 @@ export default Navbar;
     setClick(false);
   };
 
-  useEffect(() => {}, []);
+
 
   return (
     <Stack className="" direction={"row"}>
       <Box
-        className="debug"
+        className=""
         sx={{
           alignContent: "center",
           padding: "0 !important",
