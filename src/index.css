@@ -1,0 +1,278 @@
+* {
+  margin: 0 !important;
+}
+.debug {
+  border: 0.5px solid;
+  box-sizing: border-box;
+}
+
+.fh {
+  height: 100%;
+}
+
+.vh {
+  height: 100vh;
+}
+
+.p-rel {
+  /*box-sizing: border-box;*/
+  position: relative;
+}
+
+:root {
+  --bg: #121212;
+  --accent-bg: #202020;
+  --text: rgb(98, 98, 98);
+  --accent: rgb(47, 47, 47);
+  --head-color: #3c3c3c;
+  --dbg: #ffffff;
+
+  --sans: system-ui, "Segoe UI", Gotham, sans-serif;
+  --heading: system-ui, "Segoe UI", Roboto, sans-serif;
+  --head-waight: bolder;
+  --shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  --debag: 1px solid var(--dgb);
+
+  font-family: var(--sans);
+  color: var(--text);
+}
+/* fast designs */
+
+.fh {
+  height: 100% !important;
+}
+.scroll {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+.left {
+  align-items: left !important;
+  text-align: unset !important;
+  justify-content: left;
+}
+
+.right {
+  align-items: flex-end !important;
+  text-align: right !important;
+  justify-content: flex-end;
+}
+
+.debug-dot {
+  border: 1px dotted;
+}
+
+.red {
+  border-color: red;
+}
+
+.debug-accent {
+  border: 1px solid var(--dbg);
+}
+.p-rel {
+  position: relative !important;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.p-abs {
+  position: absolute !important;
+  overflow: hidden;
+}
+
+.x2-box {
+  height: 100vw !important;
+}
+
+.grow-2 {
+  flex-grow: 2;
+}
+.grow {
+  flex-grow: 1;
+}
+.unspace {
+  justify-content: unset !important;
+}
+
+.caption {
+  font-size: 11px !important;
+}
+.txt-left {
+  text-align: left !important;
+}
+
+.snap-scroll {
+  scroll-snap-align: start;
+}
+.scroll-parent {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  scroll-snap-type: mandatory;
+}
+
+.caption {
+  font-size: 9px !important;
+  display: "none";
+}
+
+.normal {
+  position: unset !important;
+  margin: 0 !important;
+  text-align: center;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  line-height: 01 !important;
+}
+
+.center-self {
+  margin: auto !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+}
+
+.center-items {
+  justify-content: center !important;
+  display: flex;
+  flex-flow: column;
+  box-sizing: border-box;
+}
+
+/*specila edits*/
+.text-field {
+  transition-duration: 1.5s ease-in-out;
+}
+
+.skeleton {
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0px 4px 2px rgba(0, 0, 0, 0.291);
+}
+
+.skeleton::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  background: linear-gradient(
+    to left,
+    transparent,
+    rgba(74, 74, 74, 0.2),
+    transparent
+  );
+  animation: loading 1.5s infinite;
+}
+.lix {
+  position: absolute !important;
+  height: 100%;
+  z-index: 1;
+  top: 0;
+  width: 100%;
+  background: linear-gradient(
+    to top,
+    #77ff1d23,
+    transparent,
+    transparent,
+    transparent,
+    #46ff1d22
+  );
+
+  animation: onGradient 20s infinite;
+}
+
+.buble {
+  height: 80px;
+  width: 80px;
+  border-radius: 50px;
+  position: absolute;
+}
+
+@keyframes onBuble {
+  0% {
+    top: 0;
+  }
+  10% {
+    bottom: 0;
+  }
+  20% {
+    left: 0;
+    bottom: 50vh;
+  }
+}
+
+@keyframes onGradient {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  25%,
+  75% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+}
+::-webkit-scrollbar {
+  width: 0px;
+  height: 2px;
+}
+::-webkit-slider-runnable-track {
+  width: 40px;
+  height: 40px;
+}
+
+.anim1,
+.anim2,
+.anim3 {
+  border-radius: 50px;
+  width: 5px;
+  height: 5px;
+  background-color: var(--text);
+  transform: translateY(10px) ease-in-out;
+}
+
+.anim1 {
+  animation: onLoading 1.5s infinite;
+  animation-delay: 0s;
+}
+
+.anim2 {
+  animation: onLoading 1.5s infinite;
+  animation-delay: 0.5s;
+  transition-behavior: ease-in-out;
+}
+
+.anim3 {
+  animation: onLoading 1.5s infinite;
+  animation-delay: 1s;
+}
+
+/*animation comands*/
+/*skeleton anim /loading
+*threedots anim / onLaoding /anim1...3
+*/
+@keyframes onLoading {
+  0%,
+  100% {
+    transform: translateY(1px);
+  }
+
+  20% {
+    transform: translateY(0px);
+  }
+
+  50%,
+  60% {
+    transform: translateY(10px);
+  }
+}
+
+@keyframes loading {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

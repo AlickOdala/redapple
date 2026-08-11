@@ -1,0 +1,118 @@
+﻿{
+  "companyName": "Red Apple Visuals",
+  "tagline": ["Capturing Moments", "Creating Stories."],
+  "welcome": "Red Apple Visuals is a professional photography and videography company dedicated to preserving life's most precious moments through high-quality photos and cinematic videos. Whether it's a wedding, corporate event, graduation, or commercial project, we bring creativity, professionalism, and attention to detail to every assignment.",
+  "mission": "To provide exceptional photography and videography services that tell meaningful stories, preserve memories, and exceed our clients' expectations through creativity, innovation, and professionalism.",
+  "vision": "To become one of the leading visual media companies in Malawi and beyond, recognized for quality, creativity, and outstanding customer service.",
+  "goals": [
+    "To deliver high-quality photography and videography services which creates unforgettable memories for individuals and businesses.",
+    "To continuously improve through innovation and modern technology by promoting creativity and excellence in every project and provide reliable, affordable, and professional services."
+  ],
+  "services":{},
+  },
+  "whyChooseUs": [
+    "Professional and experienced team",
+    "High-quality cameras and equipment",
+    "Creative storytelling",
+    "Fast turnaround time",
+    "Affordable packages",
+    "Friendly customer service",
+    "Flexible booking options",
+    "Attention to every detail"
+  ],
+  "coreValues": [
+    "We value Quality and we believe every client deserves exceptional work and absolute satisfaction. We strive to go beyond expectations in every project we handle."
+  ],
+  "process": [
+    "Contact us.",
+    "Discuss your project and requirements.",
+    "Receive a quotation.",
+    "Confirm your booking with a deposit.",
+    "We capture your special moments.",
+    "Professional editing and quality checks.",
+    "Delivery of your final photos and videos."
+  ],
+  "bookingInfo": [
+    "Contact us by phone, WhatsApp, email, or social media.",
+    "Share your event details, including date, venue, and service required.",
+    "Receive a customized quotation.",
+    "Pay the required booking deposit.",
+    "Your date is officially reserved."
+  ],
+  "feedback": "Your satisfaction is our priority. We value every review and encourage clients to share their experience. Your feedback helps us improve our services and continue delivering exceptional work.",
+  "faq": {
+    "cta": "We proud to Respond to our Cliants in timw. Find answers from Frequent Asked Questions.",
+    "question": [
+      {
+        "Q": "How far in advance should I book?",
+        "A": "We recommend booking as early as possible, especially for weddings and major events."
+      },
+      {
+        "Q": "Do you travel?",
+        "A": "Yes. We cover events across Malawi and can travel to other locations upon request."
+      },
+      {
+        "Q": "How long does editing take?",
+        "A": "Delivery time depends on the project, but we always communicate the expected timeline before work begins."
+      },
+      {
+        "Q": "Do you offer customized packages?",
+        "A": "Yes. We tailor our packages to suit different budgets and event requirements."
+      }
+    ]
+  },
+  "contact": {
+    "heading": "Ready to capture your special moments?",
+    "cta": "Contact Red Apple Visuals today to book your photography or videography session. Let us turn your memories into timeless stories",
+    "details": [
+      {
+        "name": "Whatsapp",
+        "url": "http://wa.me/265882576282",
+        "action": "Chart",
+        "linkTo": "+265882576282"
+      },
+      {
+        "name": "Call",
+        "url": "tel:+265993101313",
+        "action": "Call Now",
+        "linkTo": "0886486411"
+      },
+      {
+        "name": "Facebook",
+        "url": "whttp://fb.com/lixart/",
+        "action": "View Profile",
+        "linkTo": "RedApple Creative Media"
+      },
+      {
+        "name": "Email",
+        "url": "mailto:mitamboibrahim@gmail.com",
+        "action": "Send Contract",
+        "linkTo": "redapple@gmail.com"
+      },
+      {
+        "name": "X",
+        "url": "http://redapple@x.com",
+        "action": "Follow",
+        "linkTo": "redapple@x.com"
+      },
+      {
+        "name": "Instagram",
+        "url": "https://@redappleCreative.instagram",
+        "action": "Follow",
+        "linkTo": "@redappleCreative"
+      },
+      {
+        "name": "Location",
+        "url": "http://google.maps/",
+        "action": "View Location",
+        "linkTo": "Kachere, Blantyre, Malawi"
+      }
+    ]
+  },
+  "Location": {
+    "country": "Malawi",
+    "city": "Blantyre",
+    "town": "Kachere",
+    "address": "P.O. Box 282 Blantyre, Kachere"
+  }
+}
