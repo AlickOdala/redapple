@@ -13,7 +13,7 @@
     "videography": ["wedding"],
     "editing_and_design": ["wedding"]
   },
-  "whyChooseUs": [
+  "wyuhyChooseUs": [
     "Professional and experienced team",
     "High-quality cameras and equipment",
     "Creative storytelling",
@@ -59,7 +59,7 @@
       {
         "name": "Whatsapp",
         "url": "http://wa.me/265882576282",
-        "action": "Chart",
+        "action": "Chat",
         "linkTo": "265882576282"
       },
       {
@@ -91,12 +91,6 @@
         "url": "https://@redappleCreative.instagram",
         "action": "Follow",
         "linkTo": "@redappleCreative"
-      },
-      {
-        "name": "Location",
-        "url": "http://google.maps/",
-        "action": "View Location",
-        "linkTo": "Kachere, Blantyre, Malawi"
       }
     ]
   },

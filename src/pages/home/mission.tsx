@@ -144,7 +144,7 @@ const PageText = ({ data }: { data: string }) => {
       className=" red center-items fh"
       sx={{
         height: { xs: "auto", sm: "50%" },
-        px: 2,
+        px: 4,
         //display: {xs:"flex"},
         gap: { xs: 2, sm: 2 },
         py:2
