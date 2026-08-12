@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "pnpm run convert:webp && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "convert:webp": "tsx scripts/convert-to-webp.ts"

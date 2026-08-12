@@ -13,12 +13,9 @@ const SlideMenu = ({ open, data, setOpen }: Props) => {
   const items = {
     Home: "/",
     "About Us": "/about",
-    Gallery: "/gallery",
+    Portfolio: "/portifolio",
     "Contact Us": "/contact",
-    "Send Feedback": "/feedback",
-    "Book Now": "/booking",
     Settings: "/setting",
-    FQs: "/fqs",
   };
 
   return (
@@ -28,14 +25,22 @@ const SlideMenu = ({ open, data, setOpen }: Props) => {
         variant="temporary"
         anchor="right"
         sx={{
-          display: { xs: "block", sm: "none" },
+          "& .MuiDrawer-paper": {
+            bgcolor: "transparent",
+            margin: "auto",
+            backdropFilter: "blur(10px)",
+          },
+          "& .MuiDrawer-root": {
+            backdropFilter: "blur(10px)",
+          },
         }}
       >
         <Paper
-          className="fh "
+          className="fh  "
           sx={{
-            width: "230px",
+            width: "100%",
             padding: "20% 16px 0",
+            bgcolor: "transparent",
           }}
         >
           <Toolbar />
@@ -44,38 +49,6 @@ const SlideMenu = ({ open, data, setOpen }: Props) => {
           </Stack>
         </Paper>
       </Drawer>
-
-      <Container
-        className="p-rel  center-items"
-        sx={{
-          display: {
-            xs: "none",
-            sm: "block",
-          },
-          height: "100%",
-          zIndex: 1000,
-        }}
-        disableGutters
-      >
-        <Paper
-          className=" fh"
-          sx={{
-            //width:"100%",
-            padding: "20% 16px 0",
-            display: { xs: "none", md: "block" },
-            minHeight: "100%",
-            bgcolor: "transparent",
-          }}
-        >
-          <Toolbar />
-          <Box className="" sx={{ p: 1, bgcolor: "primary.main" }}>
-            <HeadText text="Menu" color="primary.contrastText" />
-          </Box>
-          <Stack className="" spacing={1}>
-            <RecursiveMenu item={items} setSlide={setOpen} />
-          </Stack>
-        </Paper>
-      </Container>
     </Box>
   );
 };

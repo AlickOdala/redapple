@@ -2,7 +2,7 @@ import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
 import {
-  BackgroundImage,
+
   HeadText,
   TextContext,
   ActionButton,
@@ -66,10 +66,7 @@ const Mission = ({ data }: { data: string }) => {
 
 const Burner = ({ text }: { text?: string }) => {
   return (
-    <BackgroundImage
-      image={bgImage}
-      filter="grayscale(0.8) contrast(1.2) blur(0.2px)"
-    >
+
       <Stack
         className="  p-rel red"
         sx={{
@@ -137,7 +134,7 @@ const Burner = ({ text }: { text?: string }) => {
           }
         />
       </Stack>
-    </BackgroundImage>
+
   );
 };
 

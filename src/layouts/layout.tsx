@@ -13,6 +13,8 @@ import { Outlet, useLoaderData, useNavigation } from "react-router-dom";
 import Navbar from "../common/navbar";
 import { Loading, BgWrapper } from "../common/lui/lixmaterial";
 import bgImage from "../assets/webuse/loading/loading.webp";
+import { LuiBgImage } from "../common/lui/material";
+
 interface LayoutProps {
   children: React.ReactNode;
   data?: any;
@@ -24,19 +26,16 @@ const variant = {
     position: "relative",
     boxSizing: "border-box",
     height: "100vh",
-    overflow: "hidden",
   },
   main: {
     height: "100vh",
     overFlow: "hidden !important",
     boxSizing: "bolder-box",
-    backdropFilter:'blur(10px)'
+    backdropFilter: "blur(10px)",
   },
   center: {
     height: "100vh",
-    scrollBehavior: "smooth",
-    webkitOverflowScrolling: "touch",
-    overflowY: "auto",
+
     width: "100%",
   },
   aside: {
@@ -53,68 +52,45 @@ const Layout = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigation();
 
+  return (
+    <Box
+      component="main"
+      className="vh "
+      ref={scrollContainerRef}
+      sx={{
+        overflowY: "auto",
+        overflowx: "hidden",
+        //scrollBehavior: "smooth",
+        webkitOverflowScrolling: "touch",
 
-
-  try {
-    return (
-      <Container className="vh" disableGutters sx={variant.container}>
-        <Grid className="" sx={variant.navbar}>
-          <Navbar
-            setSlideOpen={setSlide}
-            isSlide={slide}
-            scrollTarget={scrollContainerRef.current}
-          />
-        </Grid>
-
-        <Grid
-          container
-          className="red p-rel"
-          sx={variant.main}
-          direction={"row"}
-          spacing={1}
-        >
-          <Grid
-            className="red"
-            size={{xs:12, sm:9, md:9.5 }}
-            sx={variant.center}
-            ref={scrollContainerRef}
-          >
-            {navigate.state === "loading" && <Loading />}
-            <Suspense fallback={<Loading />}>
-              <Box
-                className=""
-                sx={{ position: "relative", minHeight: "100vh" }}
-              >
-                <Outlet context={data} />
-              </Box>
-              <Box className="" sx={{ position: "relative" }}>
-                <Footer data={data} />
-              </Box>
-            </Suspense>
-          </Grid>
-
-          <Grid className="red p-rel" size={{ xs: 3, sm: 2, md:2.5}} sx={variant.aside}>
-            <SlideMenu open={slide} data={{ data: data }} setOpen={setSlide} />
-          </Grid>
-        </Grid>
-      </Container>
-    );
-  } catch (e: unknown) {
-    console.error(e);
-    return (
-      <Paper
-        sx={{ margin: "50% 20%  !important" }}
-        className="self-center p-abs text"
+      }}
+    >
+      <Navbar
+        setSlideOpen={setSlide}
+        isSlide={slide}
+        scrollTarget={scrollContainerRef.current}
+      />
+      <LuiBgImage
+        image={"logo/logo.webp"}
+        filter={"blur(80px) opacity(0.4)"}
       >
-        {" "}
-        Something Went wrong:{(e as Error).message}
-      </Paper>
-    );
-  }
+        <Suspense fallback={<Loading />}>
+          <Box
+            className=""
+            sx={{ position: "relative", minHeight: "100vh"}}
+          >
+            <Outlet context={data} />
+          </Box>
+          <Box className="" sx={{ position: "relative" }}>
+            <Footer data={data} />
+          </Box>
+          <SlideMenu open={slide} data={{ data: data }} setOpen={setSlide} />
+        </Suspense>
+      </LuiBgImage>
+    </Box>
+  );
 };
 
 export default Layout;
-// 
-/* 
-
-          */
+//
+//

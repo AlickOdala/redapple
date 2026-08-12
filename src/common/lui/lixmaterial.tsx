@@ -123,7 +123,7 @@ export const RecursiveMenu = ({
                 <ListItemIcon />
                 <ListItemText
                   sx={{
-                    color: "text.secondary",
+                    color: "white",
                     fontWeight: "bolder",
                     "& .MuiListItemText": {},
                   }}
@@ -304,40 +304,6 @@ export const TextIcon = ({
     </Box>
   );
 };
-
-interface BackgroundImageProp {
-  image: string;
-  filter?: string;
-  parallax?: boolean;
-  overlay?: number;
-}
-
-export const BackgroundImage = styled(Box)<BackgroundImageProp>(
-  ({ image, filter, parallax, overlay = 0.5 }) => ({
-    position: "relative",
-    backgroundColor: "transparent",
-    zIndex: 0,
-    "&::before": {
-      content: '""',
-      position: "absolute",
-      top: 0,
-      left: 0,
-      bottom: 0,
-      right: 0,
-      backgroundImage: `linear-gradient(rgba(0, 0, 0, ${overlay}), transparent ,rgba(67, 67, 67, ${overlay})), url(${image})`,
-      backgroundSize: "cover",
-      backgroundPosition: "top",
-      backgroundRepeat: "no-repeat",
-      backgroundAttachment: !parallax ? "fixed" : "scroll",
-      filter: filter || "none",
-      zIndex: -1,
-    },
-    "& > *": {
-      position: "relative",
-      zIndex: 1,
-    },
-  }),
-);
 
 export const DataSelector = ({
   toFilter,
@@ -1015,44 +981,7 @@ interface BgWraperProps {
   children: React.ReactNode;
   overlay?: number;
   blur?: number;
-  parallax?: boolean;
 }
-export const BgWrapper = ({
-  bgImage,
-  children,
-  overlay = 0.5,
-  blur = 0,
-  parallax = false,
-}: BgWraperProps) => {
-  return (
-    <Box sx={{ position: "relative", with: "100%", height: "100%" }}>
-      <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, ${overlay}), transparent ,rgba(67, 67, 67, ${overlay})), url(${bgImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundAttachment: parallax ? "fixed" : "scroll",
-          zIndex: -1,
-          borderRadius: "inherit",
-        }}
-      >
-        <Box
-          sx={{
-            position: "relative",
-            zIndex: 100,
-            backdropFilter: `blur(${blur}px)`,
-          }}
-        >
-          {children}
-        </Box>
-      </Box>
-    </Box>
-  );
-};
 
 interface LandingPAgeProp {
   children: React.ReactElement;

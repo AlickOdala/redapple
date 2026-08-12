@@ -30,7 +30,7 @@ const RedAppleName = ({
           <Image
             className=""
             sx={{ transform: { xs: "scale(0.8)" } }}
-            src={"logo/logoSvg.svg"}
+            src={"logo/logo.webp"}
           />
         )}
       </Box>
