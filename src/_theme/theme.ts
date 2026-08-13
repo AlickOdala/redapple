@@ -3,7 +3,6 @@ import { grey } from "@mui/material/colors";
 import { BorderStyle, Palette } from "@mui/icons-material";
 import { scale } from "framer-motion";
 
-
 export const RedAppleTheme = createTheme({
   palette: {
     primary: {
@@ -16,7 +15,7 @@ export const RedAppleTheme = createTheme({
     },
     background: {
       default: "#fcf9f9",
-      paper: "#e6e6e6",
+      paper: "#e1919154",
     },
     text: {
       primary: "#610101",

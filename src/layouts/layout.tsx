@@ -15,6 +15,7 @@ import { Loading, BgWrapper } from "../common/lui/lixmaterial";
 import bgImage from "../assets/webuse/loading/loading.webp";
 import { LuiBgImage } from "../common/lui/material";
 
+
 interface LayoutProps {
   children: React.ReactNode;
   data?: any;
@@ -35,13 +36,6 @@ const variant = {
   },
   center: {
     height: "100vh",
-<<<<<<< HEAD
-    //scrollBehavior: "smooth",
-    webkitOverflowScrolling: "touch",
-    overflowY: "auto",
-=======
-
->>>>>>> 7c6b1af (update: second commit)
     width: "100%",
   },
   aside: {
@@ -66,25 +60,17 @@ const Layout = () => {
       sx={{
         overflowY: "auto",
         overflowx: "hidden",
-        //scrollBehavior: "smooth",
         webkitOverflowScrolling: "touch",
-
+      }}
     >
       <Navbar
         setSlideOpen={setSlide}
         isSlide={slide}
         scrollTarget={scrollContainerRef.current}
       />
-      <LuiBgImage
-        image={"logo/logo.webp"}
-        filter={"blur(80px) opacity(0.4)"}
->>>>>>> 7c6b1af (update: second commit)
-      >
-        <Suspense fallback={<Loading />}>
-          <Box
-            className=""
-            sx={{ position: "relative", minHeight: "100vh"}}
-          >
+      <LuiBgImage image={"logo/logo.webp"} filter={"blur(40px) opacity(0.4)"}>
+        <Suspense fallback={<Loading />} ref={scrollContainerRef}>
+          <Box className="" sx={{ position: "relative", minHeight: "100vh" }}>
             <Outlet context={data} />
           </Box>
           <Box className="" sx={{ position: "relative" }}>

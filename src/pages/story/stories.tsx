@@ -34,16 +34,16 @@ const StoryPage = ({ data }: { data: any }) => {
   const navigate = useNavigate();
 
   const images = [
-    { name: "charity", url: "story_photos/charity/charity.webp" },
-    { name: "cooperate", url: "story_photos/cooperate/cooperate.webp" },
-    //{ name: "immigration", url: "story_photos/immigration/immigration.webp" },
-    { name: "graduation", url: "story_photos/graduation/graduation.webp" },
-    { name: "studio", url: "story_photos/studio/studio.webp" },
-    { name: "sports", url: "story_photos/sports/sports.webp" },
-    { name: "wedding", url: "story_photos/wedding/wedding.webp" },
-    { name: "wanderers", url: "story_photos/wanderers/wanderers.webp" },
-    // { name: "fam", url: "story_photos/fam/fam.webp" },
-    { name: "documentary", url: "story_photos/documentary/documentary.webp" },
+    { story: "charity", url: "story_photos/charity/charity.webp" },
+    { story: "cooperate", url: "story_photos/cooperate/cooperate.webp" },
+    //{ story: "immigration", url: "story_photos/immigration/immigration.webp" },
+    { story: "graduation", url: "story_photos/graduation/graduation.webp" },
+    { story: "studio", url: "story_photos/studio/studio.webp" },
+    { story: "sports", url: "story_photos/sports/sports.webp" },
+    { story: "wedding", url: "story_photos/wedding/wedding.webp" },
+    { story: "wanderers", url: "story_photos/wanderers/wanderers.webp" },
+    // { story: "fam", url: "story_photos/fam/fam.webp" },
+    { story: "documentary", url: "story_photos/documentary/documentary.webp" },
   ];
 
   const info = {
@@ -65,24 +65,33 @@ const StoryPage = ({ data }: { data: any }) => {
   };
 
   return (
-    <Section text="Portifolio" >
-      <LuiHeadText text={head} center />
-      <LuiText text={subhead} center />
-<<<<<<< HEAD
-      {images.map((imag, i) => (
-=======
-      {images.slice(0,3).map((imag, i) => (
->>>>>>> 100dea926bded145b1d29343deb4d9796f7f0245
-        <LuiCardMedia src={imag} details />
-      ))}
-      <Box className="center-items right">
-        <LuiButton
-          onClick={() => navigate("/portifolio")}
-          text="View Portifolio"
-          bgcolor="transparent"
-          txtcolor="#121212"
-        />
-      </Box>
+    <Section text="Portifolio">
+      <>
+        <LuiHeadText text={head} center />
+        <LuiText text={subhead} center />
+        <Box
+          className="debug"
+          sx={{
+            display: "flex",
+            flexFlow: { xs: "column", sm: "row" },
+            gap: 2,
+            flexWrap: "wrap",
+          }}
+        >
+          {images.slice(0, 3).map((imag, i) => (
+            <LuiCardMedia src={imag} details />
+          ))}
+        </Box>
+
+        <Box className="center-items right">
+          <LuiButton
+            onClick={() => navigate("/portifolio")}
+            text="View Portifolio"
+            bgcolor="transparent"
+            txtcolor="#121212"
+          />
+        </Box>
+      </>
     </Section>
   );
 };

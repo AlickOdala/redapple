@@ -1,50 +1,32 @@
 import { Box, Stack, Toolbar, IconButton } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import RedAppleName from "../../common/lui/redapplename";
-import {
-  HeadText,
-  TextContext,
-
-  LandingPage,
-} from "../../common/lui/lixmaterial";
-import ContactPage from "../contact/contact";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import bgImage from "../../assets/webuse/loading/loading.webp";
-const variant = {
-  container: {
-    width: "100%",
-    px: 2,
-    display: "flex",
-    flexflow: "column",
-    gap: 2,
-  },
-  leftAside: {
-    size: { xs: 12, sm: 2 },
-    height: "auto",
-    borderRight: "0.5px solid",
-  },
-  main: {
-    height: "auto",
-    padding: "8px 0 !important",
-    gap: 4,
-    display: "flex",
-    flexFlow: "column",
-  },
-  midBox: {
-    height: { xs: "fit-content", sm: "80%" },
-    margin: "auto !important",
-    flexGrow: 1,
-    width: "100%",
-  },
-};
+import {
+  LuiButton,
+  LuiCard,
+  LuiCardMedia,
+  LuiHeadText,
+  LuiText,
+  Section,
+} from "../../common/lui/material";
+import { ArrowBackRounded } from "@mui/icons-material";
+import RFQs from "../../common/sections/rfqs";
 
 const AboutPage = () => {
   const data = useOutletContext();
   const { welcome, goals, coreValues } = data;
-  const views = [<ContactPage data={data} />];
   const navigate = useNavigate();
   const [expand, setExpand] = useState(199);
   const [click, setClick] = useState(false);
+
+  const info = {
+    head: "The Story About Our Production.",
+    team: [
+      { name: "Mr Redapple", position: "CEO", img: "" },
+      { name: "Mr Redapple", position: "CEO", img: "" },
+      { name: "Mr Redapple", position: "CEO", img: "" },
+    ],
+  };
 
   const hundleExpand = () => {
     if (click === true) {
@@ -56,88 +38,51 @@ const AboutPage = () => {
     }
   };
 
+  const { head, team } = info;
   return (
+    <Box className="" sx={{ pt: 10, px: 2 }}>
+      <Box className="" sx={{ py: 2 }}>
+        <ArrowBackRounded onClick={() => navigate("/")} />
+      </Box>
+      <Box sx={{ display: "flex", flexFlow: "column", gap: 4, px: 1 }}>
+        <LuiHeadText text={head} />
+        <LuiText text={welcome} />
+        <LuiButton text="Contact" onClick={() => navigate("/contact")} />
+      </Box>
 
-      <Box className="p-rel center-items " spacing={1} sx={variant.container}>
-        <Toolbar />
-        <LandingPage>
+      <Section text="Our Goals">
+        <Box>
+          <LuiHeadText text={"Our Goals"} />
+          <LuiText text={goals} />
+        </Box>
+      </Section>
+      <Section text="Our Values">
+        <Box>
+          <LuiHeadText text={"Our Core Values"} />
+          <LuiText text={coreValues} />
+        </Box>
+      </Section>
+
+      <Section text="Team">
+        <Box>
+          <LuiHeadText
+            text={"Meet Our Team, Big Minds Where Creativity Sink."}
+          />
           <Box
-            className=""
             sx={{
               display: "flex",
-              flexFlow: "column",
-              gap: 1,
-              borderRadius: "8px",
-              boxShadow: 3,
-              p: 2,
+              flexWrap: { sm: "wrap" },
+              flexFlow: { xs: "column", sm: "row" },
             }}
           >
-            <Box className="">
-              <HeadText text="About" />
-              <RedAppleName fs={30} />
-            </Box>
-            <TextContext
-              text={welcome.slice(0, expand)}
-              center
-              sx={{ h: 200 }}
-            />
-            <IconButton
-              sx={{ fontSize: "12px", width: "fit-content" }}
-              onClick={hundleExpand}
-            >
-              {click ? "Read All" : "Read Less"}
-            </IconButton>
+            {team.map((p) => (
+              <LuiCardMedia ratio={3 / 3.2} details src={p} />
+            ))}
           </Box>
-        </LandingPage>
-        <Stack
-          className="center-items "
-          sx={{ width: "100%", gap: 2, height: { xs: "auto", sm: "50vh" } }}
-          direction={{ xs: "column", sm: "row" }}
-          spacing={2}
-        >
-          <Box className=" center-items" sx={variant.midBox}>
-            <Display head="Our Goal!" text={goals} />
-          </Box>
-          <Box className="  center-items" sx={variant.midBox}>
-            <Display count head="Golden Value" text={coreValues} />
-          </Box>
-        </Stack>
-        {views}
-      </Box>
-
-  );
-};
-
-const Display = ({
-  head,
-  text,
-  count,
-}: {
-  head?: string;
-  text?: any;
-  count?: boolean;
-}) => {
-  return (
-    <LandingPage>
-    <Box
-      className=" fh p-rel center-self"
-      sx={{
-        aspectRatio: { sm: 4 / 3.5 },
-        width: "100% !important",
-        //bgcolor: "background.default",
-        borderRadius: "8px",
-        boxShadow: 3,
-        padding: "16px 8px !important",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <Box className="" sx={{ padding: "16px 0 !important" }}>
-        <HeadText center fs={20} text={head} />
-      </Box>
-      <TextContext text={text} center />
+        </Box>
+      </Section>
+      <RFQs />
     </Box>
-    </LandingPage>
   );
 };
 

@@ -93,7 +93,7 @@ const Services = ({ menu = false }: { menu?: boolean }) => {
 
     return (
       <Box className="" sx={{ pt: 10, px: 2 }}>
-        <Box className="">
+        <Box className="" sx={{py:2}}>
           <ArrowBackRounded onClick={() => navigate("/")} />
         </Box>
         <LuiHeadText text={head} />

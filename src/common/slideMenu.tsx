@@ -29,6 +29,10 @@ const SlideMenu = ({ open, data, setOpen }: Props) => {
             bgcolor: "transparent",
             margin: "auto",
             backdropFilter: "blur(10px)",
+            top:0,
+            bottom:0,
+            right:0,
+            right:0
           },
           "& .MuiDrawer-root": {
             backdropFilter: "blur(10px)",
@@ -36,11 +40,12 @@ const SlideMenu = ({ open, data, setOpen }: Props) => {
         }}
       >
         <Paper
-          className="fh  "
+          className="fh "
           sx={{
             width: "100%",
             padding: "20% 16px 0",
             bgcolor: "transparent",
+            
           }}
         >
           <Toolbar />

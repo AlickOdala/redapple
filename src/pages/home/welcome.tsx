@@ -8,11 +8,7 @@ import {
   Toolbar,
 } from "@mui/material";
 
-import ImageCard, {
-  HeadText,
-  TextContext,
-
-} from "../../common/lui/lixmaterial";
+import ImageCard, { HeadText, TextContext } from "../../common/lui/lixmaterial";
 import { motion } from "framer-motion";
 import { useState, useEffect, lazy } from "react";
 import logo from "../../assets/webuse/logo/logo.svg";
@@ -27,7 +23,7 @@ import {
   LuiText,
   Section,
   LuiCardMedia,
-  LuiBgImage
+  LuiBgImage,
 } from "../../common/lui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -88,35 +84,36 @@ const Welcome = ({ data }: { data: any }) => {
     <Box className="">
       <LuiBgImage image={bgimages[i]} parallax>
         <Box className="denug" sx={variant.container}>
-<<<<<<< HEAD
-          <LuiCard ratio={3 / 4.1} shadow>
-          <> 
-          <LuiHeadText text={info.maintext} color="primary.contrastText" />
-            <LuiText text={info.subtext} color="primary.contrastText" />
-=======
           <LuiCard ratio={3 / 4} shadow>
-          <> 
-          <LuiHeadText text={info.maintext} color="primary.contrastText" fx={32} />
-            <LuiText text={info.subtext} color="primary.contrastText" fx={24} />
->>>>>>> 100dea926bded145b1d29343deb4d9796f7f0245
-            <Stack
-              sx={{ diplay: "flex", gap: 1, flexFlow: "row" }}
-              className=""
-            >
-              <LuiButton
-                text="Read More"
-                bgcolor="trasnparent"
-                onClick={() => navigate("/about")}
+            <>
+              <LuiHeadText
+                text={info.maintext}
+                color="primary.contrastText"
+                fx={32}
               />
-              <LuiButton
-                text="Contact"
-                bgcolor="trasnparent"
-                txtcolor="white"
-                onClick={() => navigate("/contact")}
+              <LuiText
+                text={info.subtext}
+                color="primary.contrastText"
+                fx={24}
               />
-            </Stack>
-          </>
-           
+
+              <Stack
+                sx={{ diplay: "flex", gap: 1, flexFlow: "row" }}
+                className=""
+              >
+                <LuiButton
+                  text="Read More"
+                  bgcolor="trasnparent"
+                  onClick={() => navigate("/about")}
+                />
+                <LuiButton
+                  text="Contact"
+                  bgcolor="trasnparent"
+                  txtcolor="white"
+                  onClick={() => navigate("/contact")}
+                />
+              </Stack>
+            </>
           </LuiCard>
           <Box className="" sx={{ pt: 4 }}>
             <LuiHeadText
@@ -163,22 +160,20 @@ const Welcome = ({ data }: { data: any }) => {
       </LuiBgImage>
       <Section text={"About"}>
         <>
-        <LuiHeadText text={info.about} />
+          <LuiHeadText text={info.about} />
 
-        <LuiText text={info.aboutSubtex} />
-        <LuiCardMedia />
+          <LuiText text={info.aboutSubtex} />
+          <LuiCardMedia />
 
-        <Box className="center-items" sx={{ py: 2 }}>
-          <LuiButton
-            text="See About US"
-            bgcolor="trasnparent"
-            //txtcolor="white"
-            onClick={() => navigate("/about")}
-            bgcolor=""
-          />
-        </Box>
+          <Box className="center-items" sx={{ py: 2 }}>
+            <LuiButton
+              text="See About US"
+              bgcolor="trasnparent"
+              //txtcolor="white"
+              onClick={() => navigate("/about")}
+            />
+          </Box>
         </>
-        
       </Section>
     </Box>
   );

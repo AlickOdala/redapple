@@ -61,6 +61,7 @@ interface CardMediaProp {
   src?: string;
   details?: boolean;
   ratio?: number;
+  group?: boolean
 }
 interface MediaItem {
   id: string;
@@ -93,11 +94,7 @@ interface BulleteTextProp {
 //. Layoput Compontent | HeadText | Text | Card | Section | Bollets
 export const LuiHeadText = ({
   center = false,
-<<<<<<< HEAD
-  fx = 20,
-=======
   fx = 28,
->>>>>>> 100dea926bded145b1d29343deb4d9796f7f0245
   fm = 2,
   text,
   color,
@@ -127,11 +124,7 @@ export const LuiHeadText = ({
 
 export const LuiText = ({
   center = false,
-<<<<<<< HEAD
-  fx = 14,
-=======
   fx = 20,
->>>>>>> 100dea926bded145b1d29343deb4d9796f7f0245
   fm = 2,
   text,
   color,
@@ -208,14 +201,14 @@ export const Section = ({ children, text, color }: SectinProps) => {
               display: "flex",
               position: "absolute",
               top: 18,
-              //width: "10%",
               px: 1,
               py: 0.1,
-              backdropFilter: "blur(80px)",
+              backdropFilter: "blur(40px)",
               zIndex: 10,
+              borderRadius: "50px",
             }}
           >
-            <LuiHeadText text={text} caps fx={9} color={color} />
+            <LuiHeadText text={text} caps fx={12} color={color} />
           </Box>
           <Box
             component="hr"
@@ -230,7 +223,10 @@ export const Section = ({ children, text, color }: SectinProps) => {
         </motion.div>
       )}
 
-      <Box className="" sx={{ pt: 4, display:'flex', flexFlow:"column", gap:4 }}>
+      <Box
+        className=""
+        sx={{ pt: 4, display: "flex", flexFlow: "column", gap: 4 }}
+      >
         {children}
       </Box>
     </Box>
@@ -301,28 +297,38 @@ export const LuiCardMedia = ({
   src,
   details = false,
   ratio,
+  group = false
 }: CardMediaProp) => {
   return (
     <Box
       className="p-rel"
       sx={{
         py: 1,
-        height: "auto",
+        height: { xs: "auto", sm: group? 420 : "auto" },
         display: "flex",
         flexFlow: "column",
         gap: 1,
-        ratio: ratio,
+        width: group?  "33.33%" : "100%",
+        aspectRatio:{sm: }
       }}
     >
       <Box
         className=" p-rel"
         sx={{
-          aspectRatio: { xs: 4 / 3 },
+          aspectRatio: ratio ?? {xs:4 / 3, sm:3/3.5},
           borderRadius: "16px",
         }}
       >
         <Image
-          src={src?.url ?? "/logo/logo.webp"}
+          src={
+            src?.url
+              ? src?.url
+              : src?.src
+                ? src?.src
+                : src?.img
+                  ? src?.img
+                  : "/logo/logo.webp"
+          }
           sx={{
             width: "100%",
             height: "100%",
@@ -348,8 +354,8 @@ export const LuiCardMedia = ({
               src={src?.logo ?? "/logo/logo.webp"}
               className=""
               sx={{
-                width: "30px",
-                height: "30px",
+                width: "40px",
+                height: "40px",
                 p: 0.3,
                 borderRadius: "4px",
                 bgcolor: "#63636330",
@@ -360,40 +366,42 @@ export const LuiCardMedia = ({
                 className=""
                 sx={{
                   fontWeight: "bold",
-                  fontSize: "12px",
+                  fontSize: "20px",
                   letterSpacing: "-0.02em",
                 }}
               >
-                {"RedApple" || src?.comp}
+                {src?.name ? src?.name : src?.comp ? src?.comp : "ReadApple"}
               </Typography>
               <Typography
                 className=""
-                sx={{ fontSize: "10px", letterSpacing: "-0.02em" }}
+                sx={{ fontSize: "18px", letterSpacing: "-0.02em" }}
               >
-                Shot Date
+                {src?.date
+                  ? src?.date
+                  : src.position
+                    ? src.position
+                    : "Shot Date"}
               </Typography>
             </Box>
           </Box>
-<<<<<<< HEAD
-          <Box className="" onClick={onClick}>
-=======
-          <Box className="" onClick={onClick} sx={{}}>
->>>>>>> 100dea926bded145b1d29343deb4d9796f7f0245
+
+          <Box
+            className=""
+            onClick={onClick}
+            sx={{ width: "fit-content !important" }}
+          >
             <Typography
               sx={{
                 borderRadius: "16px",
-                px: 1,
-<<<<<<< HEAD
-                fonSize: { xs: "18px" },
-=======
-                fonSize: { xs: "20px" },
->>>>>>> 100dea926bded145b1d29343deb4d9796f7f0245
+                py: 0.5,
+                px: 1.5,
+                fonSize: { xs: "24px" },
                 bgcolor: "primary.main",
                 color: "primary.contrastText",
                 letterSpacing: "-0.02em",
               }}
             >
-              {src?.name ?? ""}
+              {src?.sercice ? src?.service : src?.story ? src?.story : ""}
             </Typography>
           </Box>
         </Stack>
@@ -619,10 +627,10 @@ export const LuiButton = ({
         width: "fit-content",
         borderRadius: "50px !important",
         bgcolor: !bgcolor ? "primary.main" : bgcolor,
-        height: "30px",
+        height: "40px",
         color: !bgcolor ? "primary.contrastText" : "text.secondary",
         border: txtcolor ? ` 1px solid ${txtcolor}` : "none",
-        px: 0.5,
+        px: 0.8,
         "&:active": {
           bgcolor: "primary.main",
           color: "text.main",
@@ -635,7 +643,7 @@ export const LuiButton = ({
         sx={{
           // fontWeight: "bold",
           textAlign: "center",
-          fontSize: "14px",
+          fontSize: "16px",
           color: !bgcolor ? "primary.contrastText" : txtcolor,
           letterSpacing: "-0.02em",
         }}
@@ -759,11 +767,7 @@ export const LuiCollapse = ({
 
                 <Box
                   className=" right center-items"
-<<<<<<< HEAD
-                  sx={{ display: !showImage && "none" }}
-=======
-                  sx={{ display: !showImage && "none" , py:2}}
->>>>>>> 100dea926bded145b1d29343deb4d9796f7f0245
+                  sx={{ display: !showImage && "none", py: 2 }}
                 >
                   <LuiButton
                     onClick={() => navigate(`/service/${service}`)}
