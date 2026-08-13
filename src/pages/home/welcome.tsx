@@ -24,6 +24,7 @@ import {
   Section,
   LuiCardMedia,
   LuiBgImage,
+  LuiBulleteText,
 } from "../../common/lui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -84,7 +85,7 @@ const Welcome = ({ data }: { data: any }) => {
     <Box className="">
       <LuiBgImage image={bgimages[i]} parallax>
         <Box className="denug" sx={variant.container}>
-          <LuiCard ratio={3 / 4} shadow>
+          <LuiCard ratio={3 / 4.3} shadow>
             <>
               <LuiHeadText
                 text={info.maintext}
@@ -103,7 +104,6 @@ const Welcome = ({ data }: { data: any }) => {
               >
                 <LuiButton
                   text="Read More"
-                  bgcolor="trasnparent"
                   onClick={() => navigate("/about")}
                 />
                 <LuiButton
@@ -119,43 +119,16 @@ const Welcome = ({ data }: { data: any }) => {
             <LuiHeadText
               text={info.trusties.maintext}
               color="primary.contrastText"
-              fx={12}
+              fx={16}
+              center
             />
           </Box>
-          <Stack
-            className=" red"
-            direction="row"
-            sx={{
-              flexWrap: "wrap",
-              rowGap: 1,
-              columnGap: 2,
-            }}
-          >
-            {info.trusties.brands.map((item, i) => (
-              <Box
-                className=" "
-                sx={{
-                  py: 0.2,
-                  px: 1,
-                  bgcolor: "rgba(18, 18, 18, 0.61)",
-                  borderRadius: "4px",
-                }}
-              >
-                <Typography
-                  key={i}
-                  className="center-items"
-                  sx={{
-                    minWidth: 90,
-                    fontSize: "12px",
-                    textAlign: "center",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {item}
-                </Typography>
-              </Box>
-            ))}
-          </Stack>
+
+          <LuiBulleteText
+            texts={info.trusties.brands}
+            color="secondary.contrastText"
+            bgcolor="secondary.main"
+          />
         </Box>
       </LuiBgImage>
       <Section text={"About"}>

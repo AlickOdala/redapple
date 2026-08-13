@@ -9,7 +9,7 @@ const WelcomePage = lazy(() => import("./welcome"));
 const MissionPage = lazy(() => import("./mission"));
 const ServicesPage = lazy(() => import("../../common/sections/services"));
 const ContactPage = lazy(() => import("../contact/contact"));
-const StoryPage = lazy(() => import("../story/stories"));
+const StoryPage = lazy(() => import("../portifolio/portifolio"));
 
 const Homepage = (): JSX.Element => {
   const data = useOutletContext();
@@ -17,7 +17,7 @@ const Homepage = (): JSX.Element => {
   return (
     <Box sx={{ minHeight: "100% !important" }}>
       <WelcomePage data={data} />
-      <StoryPage data={data} />
+      <StoryPage data={data} group/>
       <ServicesPage menu />
       <Section text="Contacts">
         <ContactPage disableLocation />

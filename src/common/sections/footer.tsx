@@ -20,9 +20,9 @@ import { useNavigate } from "react-router-dom";
 
 const Footer = ({ data }: { data?: any }) => {
   const { feedback, faq, location, contact } = data ?? "";
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
-    <Box className="">
+    <Box className="" sx={{ bgcolor: "background.paper" }}>
       <Section>
         <>
           <LuiCard>
@@ -48,12 +48,23 @@ const Footer = ({ data }: { data?: any }) => {
               <LuiHeadText text={"Feedback"} />
               <LuiText text={feedback} />
               <Box className="">
-                <LuiButton text="Send Feedback" onClick={()=>navigate("/none")}/>
+                <LuiButton
+                  text="Send Feedback"
+                  onClick={() => navigate("/none")}
+                />
               </Box>
             </>
           </LuiCard>
         </>
       </Section>
+      <Box sx={{ py: 2 }}>
+        <LuiText text="Website Developed By" center fx={12} />
+        <LuiText
+          text="Alick Odala | Powered By Infiity Digital Ink."
+          center
+          fx={12}
+        />
+      </Box>
     </Box>
   );
 };

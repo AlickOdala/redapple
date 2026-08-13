@@ -6,6 +6,7 @@ import {
   LuiCard,
   LuiCardMedia,
   LuiHeadText,
+  LuiNavigation,
   LuiText,
   Section,
 } from "../../common/lui/material";
@@ -40,14 +41,12 @@ const AboutPage = () => {
 
   const { head, team } = info;
   return (
-    <Box className="" sx={{ pt: 10, px: 2 }}>
-      <Box className="" sx={{ py: 2 }}>
-        <ArrowBackRounded onClick={() => navigate("/")} />
-      </Box>
-      <Box sx={{ display: "flex", flexFlow: "column", gap: 4, px: 1 }}>
+    <Box className="" sx={{ pt: 10 }}>
+      <LuiNavigation action={"back"} link={"/"} />
+      <Box sx={{ display: "flex", flexFlow: "column", gap: 4, px: 2 }}>
         <LuiHeadText text={head} />
         <LuiText text={welcome} />
-        <LuiButton text="Contact" onClick={() => navigate("/contact")} />
+        <LuiButton text="Contact" onClick={() => navigate("/contact") } />
       </Box>
 
       <Section text="Our Goals">

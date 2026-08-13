@@ -23,11 +23,13 @@ import image from "../../assets/webuse/homebg/bg1.webp";
 import Lightbox from "yet-another-react-lightbox";
 import {
   ArrowBackIos,
+  ArrowBackSharp,
   ArrowDownward,
   ArrowForward,
   ArrowForwardIos,
   ArrowUpward,
   Call,
+  Close,
   Email,
   Face,
   Facebook,
@@ -61,7 +63,7 @@ interface CardMediaProp {
   src?: string;
   details?: boolean;
   ratio?: number;
-  group?: boolean
+  group?: boolean;
 }
 interface MediaItem {
   id: string;
@@ -87,7 +89,8 @@ interface BulleteTextProp {
   texts?: string[] | string;
   gs?: number;
   bgcolor?: string;
-  setClicked: Dispatch<SetStateAction<string>>;
+  setClicked?: Dispatch<SetStateAction<string>>;
+  color?: strong;
 }
 
 //================================================================================
@@ -95,7 +98,7 @@ interface BulleteTextProp {
 export const LuiHeadText = ({
   center = false,
   fx = 28,
-  fm = 2,
+  fm = 1.2,
   text,
   color,
   caps = false,
@@ -125,7 +128,7 @@ export const LuiHeadText = ({
 export const LuiText = ({
   center = false,
   fx = 20,
-  fm = 2,
+  fm = 1.2,
   text,
   color,
   caps = false,
@@ -157,10 +160,10 @@ export const LuiCard = ({ children, shadow, ratio }: CardProps) => {
       className="p-rel"
       sx={{
         width: "100%",
-        aspectRatio: !ratio ? { xs: 3 / 3.1, sm: 4 / 3 } : ratio,
+        aspectRatio: { xs: !ratio ? 3 / 3.2 : ratio, sm:9/5 },
         borderRadius: "16px",
-        pt: 3,
-        px: 1,
+        pt: 3.5,
+        px: 2,
         pb: 2,
         boxShadow: !shadow ? "unset" : 3,
         bgcolor: "transparent",
@@ -169,6 +172,7 @@ export const LuiCard = ({ children, shadow, ratio }: CardProps) => {
         display: "flex",
         flexFlow: "column",
         gap: 2,
+        height: {sm:"auto"}
         //backdropFilter: "blur(5px)",
       }}
     >
@@ -208,7 +212,7 @@ export const Section = ({ children, text, color }: SectinProps) => {
               borderRadius: "50px",
             }}
           >
-            <LuiHeadText text={text} caps fx={12} color={color} />
+            <LuiHeadText text={text} caps fx={12} color={color} fm={0.8} />
           </Box>
           <Box
             component="hr"
@@ -236,6 +240,7 @@ export const LuiBulleteText = ({
   texts,
   gs = 6,
   bgcolor,
+  color,
   setClicked,
 }: BulleteTextProp) => {
   const [initial, setInitial] = useState("");
@@ -245,8 +250,7 @@ export const LuiBulleteText = ({
   }, []);
 
   useEffect(() => {
-    console.log("initial", initial);
-    setClicked(initial);
+    if (setClicked) setClicked(initial);
   }, [initial]);
 
   const hundleClick = (value: string) => {
@@ -254,7 +258,7 @@ export const LuiBulleteText = ({
   };
 
   return (
-    <Grid container className="" spacing={0.3}>
+    <Grid container className="" spacing={1}>
       {texts.map((text) => {
         return (
           <Grid
@@ -267,18 +271,18 @@ export const LuiBulleteText = ({
               className=""
               sx={{
                 bgcolor: !bgcolor ? "rgba(149, 63, 63, 0.21)" : bgcolor,
-                py: 0.3,
+                py: 1,
                 borderRadius: "4px",
               }}
             >
               <Typography
                 sx={{
-                  fontSize: "10px",
+                  fontSize: "14px",
                   fontWeight: "bolder",
                   textSpacing: "-0.2rem",
                   textAlign: "center",
                   height: "fit-content",
-                  color: "text.secondary",
+                  color: color ? color : "text.secondary",
                 }}
               >
                 {text ?? ""}
@@ -297,29 +301,33 @@ export const LuiCardMedia = ({
   src,
   details = false,
   ratio,
-  group = false
+  group = false,
 }: CardMediaProp) => {
   return (
     <Box
       className="p-rel"
       sx={{
         py: 1,
-        height: { xs: "auto", sm: group? 420 : "auto" },
+        height: { xs: "auto", sm: group ? 350 : "auto" },
         display: "flex",
         flexFlow: "column",
         gap: 1,
-        width: group?  "33.33%" : "100%",
-        aspectRatio:{sm: }
+        width: group ? { sm: "33.33%" } : "100% !important",
+        aspectRatio: { sm: 9 / 6 },
       }}
     >
       <Box
-        className=" p-rel"
+        className="p-rel"
         sx={{
-          aspectRatio: ratio ?? {xs:4 / 3, sm:3/3.5},
+          aspectRatio: ratio ?? { xs: 4 / 3, sm: 3 / 3.5 },
           borderRadius: "16px",
+          bgcolor: "#52202014",
         }}
       >
         <Image
+          showLoading
+          loading="lazy"
+          decoding="async"
           src={
             src?.url
               ? src?.url
@@ -327,7 +335,9 @@ export const LuiCardMedia = ({
                 ? src?.src
                 : src?.img
                   ? src?.img
-                  : "/logo/logo.webp"
+                  : src
+                    ? src
+                    : "/logo/logo.webp"
           }
           sx={{
             width: "100%",
@@ -337,7 +347,7 @@ export const LuiCardMedia = ({
             position: "absolute !important",
             top: 0,
             lef: 0,
-            bgcolor: "rgba(130, 28, 38, 0.11)",
+            bgcolor: "rgba(130, 28, 38, 0.37)",
           }}
         />
       </Box>
@@ -497,7 +507,6 @@ export const LuiMediaSlide = ({ images }: { images: string[] }) => {
       sx={{
         aspectRatio: { xs: 3 / 4.5, sm: 9 / 4.5 },
         pt: 1,
-        pb: 4,
         height: { sm: "fit-content" },
       }}
     >
@@ -514,7 +523,6 @@ export const LuiMediaSlide = ({ images }: { images: string[] }) => {
           cols={cols}
           sx={{
             height: "auto !important",
-            padding: "4px 0 0",
             display: { xs: "none", sm: "block" },
           }}
         >
@@ -559,10 +567,7 @@ export const LuiMediaSlide = ({ images }: { images: string[] }) => {
             />
           </Box>
           <Box
-            className=""
             sx={{
-              py: 1,
-              px: 2,
               display: "flex",
               height: "15%",
               justifyContent: "center",
@@ -654,6 +659,45 @@ export const LuiButton = ({
   );
 };
 
+export const LuiNavigation = ({
+  link,
+  action,
+}: {
+  link?: string;
+  actoin: string;
+}) => {
+  const navigate = useNavigate();
+  const icons = [
+    { name: "back", inIcon: <ArrowBackSharp /> },
+    { name: "forward", inIcon: <ArrowForward /> },
+    { name: "Close", inIcon: <Close /> },
+  ];
+
+  const inIcon: string = icons
+    .map((icon) => icon)
+    .find((icon) => icon.name.toLowerCase() === action.toLowerCase());
+
+  useEffect(() => {
+    console.log("inIcon", inIcon);
+  });
+
+  return (
+    <Box sx={{ py: 2, px: 2 }}>
+      <Box sx={{ width: 40, height: 40 }}>
+        <motion.div
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 1.5 }}
+          initial={{ scale: 1 }}
+        >
+          <IconButton onClick={() => navigate(link)}>
+            {inIcon.inIcon}{" "}
+          </IconButton>
+        </motion.div>
+      </Box>
+    </Box>
+  );
+};
+
 export const LuiBgImage = styled(Box)<BgWraperProps>(
   ({ image, filter, parallax, overlay = 0.5 }) => ({
     position: "relative",
@@ -697,7 +741,7 @@ export const LuiCollapse = ({
     <Box className=" p-rel" sx={{ pt: 4 }}>
       {Object.entries(services).map(([service, value], i) => (
         <Grid container className="" spacing={3} key={service}>
-          <Grid className="" size={{ xs: 12, sm: 4 }}>
+          <Grid className="" size={{ xs: 12, sm: 12 }}>
             <ListItemButton
               onClick={() => handleToggle(service)}
               sx={{

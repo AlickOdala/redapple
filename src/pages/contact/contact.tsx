@@ -88,14 +88,20 @@ const ContactPage = ({ disableLocation }: { disableLocation?: boolean }) => {
   return (
     <Box
       className=""
-      sx={{ pt: !disableLocation && 10, px: !disableLocation && 2 }}
+      sx={{
+        pt: !disableLocation && 10,
+        px: !disableLocation && 2,
+        minHeight: { xs: "100vh" },
+        pb: 4,
+      }}
     >
-      <Box className="">
+      <Box className="" sx={{ py: 2, display: disableLocation && "none" }}>
         <ArrowBackRounded onClick={() => navigate("/")} />
       </Box>
-
-      <LuiHeadText text={!disableLocation ? heading : head} />
-      <LuiText text={!disableLocation ? cta : subhead} />
+      <Box sx={{ display: "flex", flexFlow: "column", gap: 4, py: 2 }}>
+        <LuiHeadText text={!disableLocation ? heading : head} />
+        <LuiText text={!disableLocation ? cta : subhead} />
+      </Box>
 
       <Box component="form" className="" onSubmit={hundleSubmit}>
         <input type="checkbox" name="botcheck" style={{ display: "none" }} />
@@ -225,7 +231,6 @@ const ContactPage = ({ disableLocation }: { disableLocation?: boolean }) => {
           <LuiContactButton item={item} i={i} />
         ))}
       </Grid>
-
       <LuiHeadText text=" find RedApple on Social media!" fx={12} />
       {!disableLocation ? (
         <LuiCard ratio={3 / 4.5}>
@@ -247,50 +252,30 @@ const ContactPage = ({ disableLocation }: { disableLocation?: boolean }) => {
     </Box>
   );
 };
-LuiCardMedia;
+
 export default ContactPage;
 
 /**
- *{details.map((item: string, i: number) => (
-            <ContactItem
-              index={i}
-              name={item.name}
-              text={item.action}
-              link={item.url}
-              linkTo={item.linkTo}
-            />
-          ))}
- */
-/**<Box
-        className=""
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "24px",
-          p: 1,
-        }}
-      >
-        <Box
-          className=""
-          sx={{ display: "flex", flexDirection: "column", gap: "8px", p: 2 }}
-        >
-          <Box className="">
-            <HeadText center fs={20} text={"Call OR Chart With us Today"} />
-          </Box>
-          <TextContext center text={heading} />
-          <TextContext center text={cta} fs={12} />
-        </Box>
-        <Grid
-          container
-          className="center-items"
-          sx={{}}
-          direction={"row"}
-          spacing={2}
-          columns={2}
-        >
-          {details.slice(0, 4).map((item, i) => (
-            <TileContactItem item={item} i={i} />
-          ))}
-        </Grid>
-      </Box>
+ * <Box className="" sx={{ py: 2 }}>
+         <ArrowBackRounded onClick={() => navigate("/")} />
+       </Box>
+       <Box sx={{ display: "flex", flexFlow: "column", gap: 4, px: 3, py: 2 }}>
+         <LuiHeadText text={head} />
+         <LuiText text={subhead} />
+         <Stack direction={"row"} sx={{ gap: 2 }}>
+           <LuiButton text="Contact" onClick={() => navigate("/contact")} />
+           <LuiButton
+             text="Gallery"
+             onClick={() => navigate("/gallery")}
+             bgcolor="transparent"
+             txtcolor="black"
+           />
+         </Stack>
+         <LuiHeadText text={"Our Resent Stories"} />
+         <LuiText
+           text={
+             "We are Trusted by Big instutions , brand, companies and even solo cliants. View our vived stories."
+           }
+         />
+       </Box>
  */

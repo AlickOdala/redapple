@@ -1,4 +1,4 @@
-import { Box, Collapse, Grid, Typography } from "@mui/material";
+import { Box, Collapse, Grid, Stack, Typography } from "@mui/material";
 import {
   HeadText,
   TextContext,
@@ -18,9 +18,11 @@ import {
   LuiCard,
   LuiBulleteText,
   LuiMediaSlide,
+  LuiNavigation,
 } from "../lui/material";
 import RandomPick, { RandomNumber } from "../../../scripts/randomPick";
 import { ArrowBackRounded } from "@mui/icons-material";
+import ContactPage from "../../pages/contact/contact";
 
 interface ServiceProp {
   data: Record<string, any>;
@@ -59,7 +61,7 @@ const Services = ({ menu = false }: { menu?: boolean }) => {
       const images = Object.values(service)[index];
       const desc = description[category];
       serviceList[category] = { ...assets[category], desc };
-      console.log("images", images);
+
     });
     setServicesData(serviceList);
   }, [open]);
@@ -71,7 +73,11 @@ const Services = ({ menu = false }: { menu?: boolean }) => {
         <>
           <LuiHeadText text={head} />
           <LuiText text={subhead} />
-          <LuiCollapse services={servicesData} showImage bgcolor="primary.main"/>
+          <LuiCollapse
+            services={servicesData}
+            showImage
+            bgcolor="primary.main"
+          />
           <Box className="" sx={{ py: 2 }}>
             <LuiButton
               text="View Gallery"
@@ -89,37 +95,62 @@ const Services = ({ menu = false }: { menu?: boolean }) => {
     const selected = assets[category];
     const serviceInView = Object.keys(selected);
 
-    console.log("view", view);
-
     return (
-      <Box className="" sx={{ pt: 10, px: 2 }}>
-        <Box className="" sx={{py:2}}>
-          <ArrowBackRounded onClick={() => navigate("/")} />
+      <Box className="" sx={{ pt: 10, minHeight: { xs: "100vh" } }}>
+        <LuiNavigation link={"/"} action="back"/>
+        <Box sx={{ display: "flex", flexFlow: "column", gap: 4, px: 3, py: 2 }}>
+          <LuiHeadText text={head} />
+          <LuiText text={subhead} />
+          <Stack direction={"row"} sx={{ gap: 2 }}>
+            <LuiButton text="Contact" onClick={() => navigate("/contact")} />
+            <LuiButton
+              text="Gallery"
+              onClick={() => navigate("/gallery")}
+              bgcolor="transparent"
+              txtcolor="black"
+            />
+          </Stack>
+          <LuiHeadText text={"Our Resent Stories"} />
+          <LuiText
+            text={
+              "We are Trusted by Big instutions , brand, companies and even solo cliants. View our vived stories."
+            }
+          />
         </Box>
-        <LuiHeadText text={head} />
-        <LuiText text={subhead} />
-        <LuiButton text="Contact" />
-
         <Section text={`${category ?? "All"} Services.`}>
           <>
-            <LuiHeadText text={category} center />
-            <LuiText text={data?.desc ?? ""} fx={12} center />
-            <LuiCard>
-              <>
-                <LuiHeadText text={"Service List"} center />
-                <LuiBulleteText texts={serviceInView} setClicked={setView} />
-              </>
-            </LuiCard>
-            {Object.entries(selected).map(([service, image], i) => {
-              if (service.toLowerCase() === view.toLowerCase()) {
-                return (
-                  <Box className="" sx={{py:2}}>
-                    <LuiHeadText text={service} fx={12}/>
-                    <LuiMediaSlide images={image} />
-                  </Box>
-                );
-              }
-            })}
+            <Box>
+              <LuiHeadText text={"Service List"} center />
+              <LuiText text={data?.desc ?? ""} fx={14} center />
+              <LuiHeadText text={category} fx={20} />
+
+              {Object.entries(selected).map(([service, image], i) => {
+                if (service.toLowerCase() === view.toLowerCase()) {
+                  return (
+                    <Box className="" sx={{ color: "grey" }}>
+                      <Box
+                        sx={{
+                          borderTop: "0.4px solid",
+                          borderBottom: "0.4px solid",
+                        }}
+                      >
+                        <LuiHeadText text={service} fx={14} center />
+                      </Box>
+
+                      <LuiMediaSlide images={image} />
+                    </Box>
+                  );
+                }
+              })}
+
+              <LuiBulleteText
+                texts={serviceInView}
+                setClicked={setView}
+                gs={12}
+              />
+            </Box>
+
+            <ContactPage disableLocation />
           </>
         </Section>
       </Box>
@@ -128,3 +159,29 @@ const Services = ({ menu = false }: { menu?: boolean }) => {
 };
 
 export default Services;
+
+/**
+ * <Box className="" sx={{ py: 2 }}>
+         <ArrowBackRounded onClick={() => navigate("/")} />
+       </Box>
+       <Box sx={{ display: "flex", flexFlow: "column", gap: 4, px: 3, py: 2 }}>
+         <LuiHeadText text={head} />
+         <LuiText text={subhead} />
+         <Stack direction={"row"} sx={{ gap: 2 }}>
+           <LuiButton text="Contact" onClick={() => navigate("/contact")} />
+           <LuiButton
+             text="Gallery"
+             onClick={() => navigate("/gallery")}
+             bgcolor="transparent"
+             txtcolor="black"
+           />
+         </Stack>
+         <LuiHeadText text={"Our Resent Stories"} />
+         <LuiText
+           text={
+             "We are Trusted by Big instutions , brand, companies and even solo cliants. View our vived stories."
+           }
+         />
+       </Box>
+ 
+ */
