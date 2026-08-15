@@ -90,7 +90,7 @@ const Welcome = ({ data }: { data: any }) => {
         <Box className="denug" sx={variant.container}>
           <LuiCard ratio={3 / 4.1} shadow>
           <> 
-          <LuiHeadText text={info.maintext} color="primary.contrastText" />
+          <LuiHeadText text={info.maintext} color="primary.contrastText" fx={24} />
             <LuiText text={info.subtext} color="primary.contrastText" />
             <Stack
               sx={{ diplay: "flex", gap: 1, flexFlow: "row" }}
