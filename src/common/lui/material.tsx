@@ -366,12 +366,12 @@ export const LuiCardMedia = ({
               </Typography>
             </Box>
           </Box>
-          <Box className="" onClick={onClick}>
+          <Box className="" onClick={onClick} sx={{py:2}}>
             <Typography
               sx={{
                 borderRadius: "16px",
                 px: 1,
-                fonSize: { xs: "18px" },
+                fonSize: { xs: "20px" },
                 bgcolor: "primary.main",
                 color: "primary.contrastText",
                 letterSpacing: "-0.02em",
