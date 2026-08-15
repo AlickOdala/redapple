@@ -743,7 +743,7 @@ export const LuiCollapse = ({
 
                 <Box
                   className=" right center-items"
-                  sx={{ display: !showImage && "none" }}
+                  sx={{ display: !showImage && "none" , py:2}}
                 >
                   <LuiButton
                     onClick={() => navigate(`/service/${service}`)}
