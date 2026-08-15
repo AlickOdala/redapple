@@ -93,7 +93,7 @@ interface BulleteTextProp {
 //. Layoput Compontent | HeadText | Text | Card | Section | Bollets
 export const LuiHeadText = ({
   center = false,
-  fx = 20,
+  fx = 24,
   fm = 2,
   text,
   color,
@@ -123,7 +123,7 @@ export const LuiHeadText = ({
 
 export const LuiText = ({
   center = false,
-  fx = 14,
+  fx = 16,
   fm = 2,
   text,
   color,
