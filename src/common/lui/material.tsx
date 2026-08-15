@@ -366,7 +366,7 @@ export const LuiCardMedia = ({
               </Typography>
             </Box>
           </Box>
-          <Box className="" onClick={onClick} sx={{py:2}}>
+          <Box className="" onClick={onClick} sx={{}}>
             <Typography
               sx={{
                 borderRadius: "16px",
