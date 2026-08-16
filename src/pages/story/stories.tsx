@@ -68,7 +68,11 @@ const StoryPage = ({ data }: { data: any }) => {
     <Section text="Portifolio" >
       <LuiHeadText text={head} center />
       <LuiText text={subhead} center />
+<<<<<<< HEAD
       {images.map((imag, i) => (
+=======
+      {images.slice(0,3).map((imag, i) => (
+>>>>>>> 100dea926bded145b1d29343deb4d9796f7f0245
         <LuiCardMedia src={imag} details />
       ))}
       <Box className="center-items right">

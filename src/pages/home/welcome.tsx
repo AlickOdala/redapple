@@ -88,10 +88,17 @@ const Welcome = ({ data }: { data: any }) => {
     <Box className="">
       <LuiBgImage image={bgimages[i]} parallax>
         <Box className="denug" sx={variant.container}>
+<<<<<<< HEAD
           <LuiCard ratio={3 / 4.1} shadow>
           <> 
           <LuiHeadText text={info.maintext} color="primary.contrastText" />
             <LuiText text={info.subtext} color="primary.contrastText" />
+=======
+          <LuiCard ratio={3 / 4} shadow>
+          <> 
+          <LuiHeadText text={info.maintext} color="primary.contrastText" fx={32} />
+            <LuiText text={info.subtext} color="primary.contrastText" fx={24} />
+>>>>>>> 100dea926bded145b1d29343deb4d9796f7f0245
             <Stack
               sx={{ diplay: "flex", gap: 1, flexFlow: "row" }}
               className=""

@@ -93,7 +93,11 @@ interface BulleteTextProp {
 //. Layoput Compontent | HeadText | Text | Card | Section | Bollets
 export const LuiHeadText = ({
   center = false,
+<<<<<<< HEAD
   fx = 20,
+=======
+  fx = 28,
+>>>>>>> 100dea926bded145b1d29343deb4d9796f7f0245
   fm = 2,
   text,
   color,
@@ -123,7 +127,11 @@ export const LuiHeadText = ({
 
 export const LuiText = ({
   center = false,
+<<<<<<< HEAD
   fx = 14,
+=======
+  fx = 20,
+>>>>>>> 100dea926bded145b1d29343deb4d9796f7f0245
   fm = 2,
   text,
   color,
@@ -366,12 +374,20 @@ export const LuiCardMedia = ({
               </Typography>
             </Box>
           </Box>
+<<<<<<< HEAD
           <Box className="" onClick={onClick}>
+=======
+          <Box className="" onClick={onClick} sx={{}}>
+>>>>>>> 100dea926bded145b1d29343deb4d9796f7f0245
             <Typography
               sx={{
                 borderRadius: "16px",
                 px: 1,
+<<<<<<< HEAD
                 fonSize: { xs: "18px" },
+=======
+                fonSize: { xs: "20px" },
+>>>>>>> 100dea926bded145b1d29343deb4d9796f7f0245
                 bgcolor: "primary.main",
                 color: "primary.contrastText",
                 letterSpacing: "-0.02em",
@@ -743,7 +759,11 @@ export const LuiCollapse = ({
 
                 <Box
                   className=" right center-items"
+<<<<<<< HEAD
                   sx={{ display: !showImage && "none" }}
+=======
+                  sx={{ display: !showImage && "none" , py:2}}
+>>>>>>> 100dea926bded145b1d29343deb4d9796f7f0245
                 >
                   <LuiButton
                     onClick={() => navigate(`/service/${service}`)}
