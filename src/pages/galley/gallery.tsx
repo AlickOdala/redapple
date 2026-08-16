@@ -56,7 +56,7 @@ const Gallery = () => {
   const assets = rawAssets.services || {};
   const [isOpen, setIsOpen] = useState(true);
   const [services, setServices] = useState<string[]>(["Service Categories"]);
-  const [gallery, setGallery] = useState<FlatGallery>({});
+  const [gallery, setGallery] = useState<FlatGallery>({}); //del
   const [inView, setInView] = useState<FlatGallery>({});
   const [toFilter, setToFilter] = useState("Service Categories");
   const navigate = useNavigate();
@@ -71,7 +71,7 @@ const Gallery = () => {
   useEffect(() => {
     if (assets && Object.keys(assets).length > 0) {
       const flattened: FlatGallery = {};
-      const serviceList: string[] = [];
+      const serviceToItem: string[] = []; //del
       const filterService: string[] = [];
 
       Object.entries(assets).forEach(([category, catData]) => {
@@ -80,10 +80,10 @@ const Gallery = () => {
           const cKey = category;
           filterService.push(key);
           if (toFilter === "Service Categories") {
-            serviceList.push(cKey);
+            serviceToItem.push(cKey);
             flattened[cKey] = items;
           } else if (key === toFilter) {
-            serviceList.push(key);
+            serviceToItem.push(key);
             flattened[key] = items;
             setInView({});
           }
@@ -203,7 +203,7 @@ const Gallery = () => {
       </Grid>
     </Dialog>
   );
-};
+}; 
 
 const GalleryContainer = ({ images, service, key }: GalleryContainerProps) => {
   const [imageToView, setImageToView] = useState<string[]>([]);

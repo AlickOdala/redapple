@@ -1,4 +1,4 @@
-import { Box, Collapse, Typography } from "@mui/material";
+import { Box, Collapse, Grid, Typography } from "@mui/material";
 import {
   HeadText,
   TextContext,
@@ -7,158 +7,124 @@ import {
 } from "../lui/lixmaterial";
 import { useEffect, useState } from "react";
 import Viewer from "../../pages/galley/viewer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
+import {
+  Section,
+  LuiHeadText,
+  LuiText,
+  LuiCollapse,
+  LuiButton,
+  LuiCard,
+  LuiBulleteText,
+  LuiMediaSlide,
+} from "../lui/material";
+import RandomPick, { RandomNumber } from "../../../scripts/randomPick";
+import { ArrowBackRounded } from "@mui/icons-material";
 
 interface ServiceProp {
-  assets: Record<string, unknown[]>;
+  data: Record<string, any>;
+}
+interface CategoryProps {
+  category: string;
 }
 
-const Services = ({ data, id }: { data: any; id?: string }) => {
-  const [assets, setAssets] = useState<ServiceProp>(
-    Object.entries(data.services),
-  );
-  const { photography, videography, edit_and_design } = data.services ?? "";
-  const [open, setOpen] = useState(null);
+const description = {
+  Photography:
+    "We capture moments that matter. Portraits, products, events-images that tell your story at aglance.",
+  Videography:
+    "Stories in motion. From brand films to events, we create videos that move people and build connection.",
+  Designs:
+    "Visuals with meaning. Branding, grapohics and layouts designed to make your story unforgettable.",
+};
+
+const info = {
+  head: "Services Built To Tell Your Story",
+  subhead:
+    "Every brand has a story. We use Photography, Videography, and Graphic Design to bring it to the world in the most powerful way",
+};
+
+const Services = ({ menu = false }: { menu?: boolean }) => {
+  const data = useOutletContext<ServiceProp>();
+  const assets = data.services;
+  const [open, setOpen] = useState(0);
   const navigate = useNavigate();
-  const [services, setServices] = useState<ServiceProp>("");
-
-
-  const hundleOpen = (category) => {
-    setOpen(open === category ? null : category);
-  };
+  const [servicesData, setServicesData] = useState({});
 
   useEffect(() => {
-    const ServiceObj = {};
-    Object.values(assets).forEach((key) => {
-      const category = key[0];
-      const serviceList = Object.keys(key[1]).flat();
-      ServiceObj[category] = serviceList;
+    const serviceList: Record<string, any> = {};
+    Object.entries(assets).forEach(([cat, service], i) => {
+      const category = cat;
+      const index = RandomNumber(0, service.length);
+      const images = Object.values(service)[index];
+      const desc = description[category];
+      serviceList[category] = { ...assets[category], desc };
+      console.log("images", images);
     });
-    setServices(ServiceObj);
-  },[]);
-  return (
-    <Box
-      id={id}
-      className=""
-      sx={{
-        px: 1,
-        height: "auto",
-        gap: 2,
-        display: "flex",
-        flexFlow: "column",
-      }}
-    >
-      <Box className=" center-items" sx={{ height: "15%" }}>
-        <Box className=" center-self">
-          <HeadText fs={18} center text={"Our Services"} />
-        </Box>
-        <Box className=" center-self" sx={{ width: "80%" }}>
-          <TextContext
-            center
-            text={
-              "we are offer Quality Services for Our cliants. kidly view our work."
-            }
-          />
-        </Box>
-      </Box>
-      <Box className="" sx={{ height: "auto", p: 3 }}>
-        <Box
-          className=""
-          sx={{
-            p: 1,
-            minHeight: "60%",
-            borderRadius: "8px",
-            bgcolor: "#3241601b",
-            backdropFilter: "grayscale(40) blur(2px)",
-            boxShadow: 3,
-            py: 2,
-          }}
-        >
-          <Box className="" sx={{ marginBottom: "8px !important" }}>
-            <HeadText text={"Click To Expand"} fs={12} />
-          </Box>
-          <Box
-            className=""
-            sx={{ display: "flex", flexFlow: "column", gap: 2 }}
-          >
-            {Object.entries(services).map(([category, service], i) => (
-              <Box className="p-rel " sx={{ width: "100%" }}>
-                <Box
-                  key={i}
-                  className=""
-                  sx={{
-                    bgcolor: "grey.200",
-                    color: "primary.contrastText",
-                    height: 32,
-                    borderRadius: "50px",
-                  }}
-                  onClick={(e) => hundleOpen(category)}
-                >
-                  <HeadText center text={category} fs={12} color="text.main" />
-                </Box>
+    setServicesData(serviceList);
+  }, [open]);
 
-                <Collapse
-                  in={open === category}
-                  className=""
-                  sx={{
-                    padding: "0 0 2px !important",
-                  }}
-                >
-                  {Object.values(service).map((item, i) => (
-                    <Box
-                      key={i}
-                      className=" "
-                      sx={{ padding: "2px 0 !important" }}
-                    >
-                      <TextContext center text={item} />
-                    </Box>
-                  ))}
-                </Collapse>
-              </Box>
-            ))}
-          </Box>
-        </Box>
-      </Box>
-      {open === null && (
-        <Box
-          className=""
-          sx={{ p: 3, display: "flex", flexFlow: "column", gap: 2 }}
-        >
-          <Typography
-            sx={{
-              fontWeight: "bolder",
-              textAlign: "center",
-              fontStyle: "italic",
-              lineHeight: 1,
-              color: "text.secondary",
-            }}
-          >
-            We make sure to give you <br /> Best Services for you events and
-            occasions.
-          </Typography>
-          <Box className="">
-            <ActionButton
-              text="View Sumples"
+  const { head, subhead } = info;
+  if (menu) {
+    return (
+      <Section text="Services">
+        <>
+          <LuiHeadText text={head} />
+          <LuiText text={subhead} />
+          <LuiCollapse services={servicesData} showImage bgcolor="primary.main"/>
+          <Box className="" sx={{ py: 2 }}>
+            <LuiButton
+              text="View Gallery"
+              center
               onClick={() => navigate("/gallery")}
             />
           </Box>
+        </>
+      </Section>
+    );
+  } else {
+    const [view, setView] = useState("");
+    const { category } = useParams();
+    const data = servicesData[category];
+    const selected = assets[category];
+    const serviceInView = Object.keys(selected);
+
+    console.log("view", view);
+
+    return (
+      <Box className="" sx={{ pt: 10, px: 2 }}>
+        <Box className="">
+          <ArrowBackRounded onClick={() => navigate("/")} />
         </Box>
-      )}
-    </Box>
-  );
+        <LuiHeadText text={head} />
+        <LuiText text={subhead} />
+        <LuiButton text="Contact" />
+
+        <Section text={`${category ?? "All"} Services.`}>
+          <>
+            <LuiHeadText text={category} center />
+            <LuiText text={data?.desc ?? ""} fx={12} center />
+            <LuiCard>
+              <>
+                <LuiHeadText text={"Service List"} center />
+                <LuiBulleteText texts={serviceInView} setClicked={setView} />
+              </>
+            </LuiCard>
+            {Object.entries(selected).map(([service, image], i) => {
+              if (service.toLowerCase() === view.toLowerCase()) {
+                return (
+                  <Box className="" sx={{py:2}}>
+                    <LuiHeadText text={service} fx={12}/>
+                    <LuiMediaSlide images={image} />
+                  </Box>
+                );
+              }
+            })}
+          </>
+        </Section>
+      </Box>
+    );
+  }
 };
 
 export default Services;
-/** 
- *      
-<Viewer assets={assets[1]} />
-      <Viewer assets={assets[0]} />
-<Box className="">
-        
-       
-      </Box>
-      <Box className="" sx={{height:200}}>
-
-      </Box>
- */

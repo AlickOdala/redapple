@@ -26,7 +26,7 @@ const Booking = () => {
     const url = `http://wa.me/${number}?text=${text}`;
     setFormData((prev) => ({ ...prev, name, email, location, date, message }));
     setOnSubmit(!onSubmit); // to open success page
-    window.open(url, "_nune");
+    window.open(url, "_none");
   };
 
 

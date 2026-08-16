@@ -10,9 +10,10 @@ const AboutPage = lazy(() => import("./pages/about/about"));
 const GalleryPage = lazy(() => import("./pages/galley/gallery"));
 const ContactPage = lazy(() => import("./pages/contact/contact"));
 const SettingPage = lazy(() => import("./common/sections/settings"));
-//const FQSPages = lazy(() => import("./common/sections/rfqs"));
+const FQSPage = lazy(() => import("./common/sections/rfqs"));
 const BookingPage = lazy(() => import("./common/sections/booking"));
 const FeedbackPage = lazy(() => import("./common/sections/feedback"));
+const ServicePage = lazy(() => import("./common/sections/services"));
 
 export const appRouter = createBrowserRouter([
   {
@@ -24,21 +25,15 @@ export const appRouter = createBrowserRouter([
       return data;
     },
     children: [
-      {
-        index: true,
-        element: (
-          <Suspense fallback={<Loading />}>
-            <HomePage />
-          </Suspense>
-        ),
-      },
-      {path: "about", element: <AboutPage />},
-      {path: "gallery", element: <GalleryPage />},
-      {path: "contact",element: <ContactPage />},
-      {path: "booking",element: <BookingPage />},
-      {path: "feedback",element: <FeedbackPage />},
+      { index: true, element: <HomePage /> },
+      { path: "about", element: <AboutPage /> },
+      { path: "gallery", element: <GalleryPage /> },
+      { path: "contact", element: <ContactPage /> },
+      { path: "booking", element: <BookingPage /> },
+      { path: "feedback", element: <FeedbackPage /> },
       { path: "setting", element: <SettingPage /> },
-      //{ path: "fqs", element: <FQSPage /> },
+      { path: "/service/:category", element: <ServicePage /> },
+      { path: "fqs", element: <FQSPage /> },
     ],
   },
 ]);

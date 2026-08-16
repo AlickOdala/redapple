@@ -4,7 +4,7 @@ import RedAppleName from "../../common/lui/redapplename";
 import {
   HeadText,
   TextContext,
-  BackgroundImage,
+
   LandingPage,
 } from "../../common/lui/lixmaterial";
 import ContactPage from "../contact/contact";
@@ -57,10 +57,7 @@ const AboutPage = () => {
   };
 
   return (
-    <BackgroundImage
-      image={bgImage}
-      filter={"blur(5px) opacity(0.2) grayscale(0.4)"}
-    >
+
       <Box className="p-rel center-items " spacing={1} sx={variant.container}>
         <Toolbar />
         <LandingPage>
@@ -107,7 +104,7 @@ const AboutPage = () => {
         </Stack>
         {views}
       </Box>
-    </BackgroundImage>
+
   );
 };
 

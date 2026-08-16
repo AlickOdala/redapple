@@ -44,25 +44,13 @@
   ],
   "feedback": "Your satisfaction is our priority. We value every review and encourage clients to share their experience. Your feedback helps us improve our services and continue delivering exceptional work.",
   "faq": {
-    "cta": "We proud to Respond to our Cliants in timw. Find answers from Frequent Asked Questions.",
-    "question": [
-      {
-        "Q": "How far in advance should I book?",
-        "A": "We recommend booking as early as possible, especially for weddings and major events."
-      },
-      {
-        "Q": "Do you travel?",
-        "A": "Yes. We cover events across Malawi and can travel to other locations upon request."
-      },
-      {
-        "Q": "How long does editing take?",
-        "A": "Delivery time depends on the project, but we always communicate the expected timeline before work begins."
-      },
-      {
-        "Q": "Do you offer customized packages?",
-        "A": "Yes. We tailor our packages to suit different budgets and event requirements."
-      }
-    ]
+    "cta": "We proud to Respond to our Cliants in time. Find answers from Frequent Asked Questions.",
+    "question": {
+      "How far in advance should I book?": "We recommend booking as early as possible, especially for weddings and major events.",
+      "Do you travel?": "Yes. We cover events across Malawi and can travel to other locations upon request.",
+      "How long does editing take?": "Delivery time depends on the project, but we always communicate the expected timeline before work begins.",
+      "Do you offer customized packages?": "Yes. We tailor our packages to suit different budgets and event requirements."
+    }
   },
   "contact": {
     "heading": "Ready to capture your special moments?",
