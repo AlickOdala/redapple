@@ -84,7 +84,7 @@ const Welcome = ({ data }: { data: any }) => {
       <LuiBgImage image={bgimages[i]} parallax>
         <Box className="denug" sx={variant.container}>
           <LuiCard shadow>
-            <>
+            <Box>
               <LuiHeadText
                 text={info.maintext}
                 color="primary.contrastText"
@@ -111,7 +111,7 @@ const Welcome = ({ data }: { data: any }) => {
                   onClick={() => navigate("/contact")}
                 />
               </Stack>
-            </>
+            </Box>
           </LuiCard>
           <Box className="" sx={{ pt: 4 }}>
             <LuiHeadText
