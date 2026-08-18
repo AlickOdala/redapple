@@ -15,7 +15,7 @@ const Homepage = (): JSX.Element => {
   const data = useOutletContext();
 
   return (
-    <Box sx={{ minHeight: "100% !important" }}>
+    <Box sx={{ minHeight: "100vh !important" }}>
       <WelcomePage data={data} />
       <StoryPage data={data} group/>
       <ServicesPage menu />
