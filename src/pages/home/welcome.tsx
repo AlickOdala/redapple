@@ -36,14 +36,12 @@ const Welcome = ({ data }: { data: any }) => {
 
   const variant = {
     container: {
-      backgroundImage: "linear-gradient(to top,  #12121290, transparent)",
       color: "primary.contrastText",
-      justifyContent: { xs: "space-between", sm: "none !important" },
       px: 2,
       pt: { xs: 12, sm: 12 },
       pb: 4,
-      minHeight: "100vh",
-      flexFlow: { xs: "column" },
+      height: "100%",
+   
     },
   };
 
