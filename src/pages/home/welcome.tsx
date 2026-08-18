@@ -83,7 +83,7 @@ const Welcome = ({ data }: { data: any }) => {
     <Box className="">
       <LuiBgImage image={bgimages[i]} parallax>
         <Box className="denug" sx={variant.container}>
-          <LuiCard ratio={3 / 4.3} shadow>
+          <LuiCard shadow>
             <>
               <LuiHeadText
                 text={info.maintext}
