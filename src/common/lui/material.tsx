@@ -160,7 +160,7 @@ export const LuiCard = ({ children, shadow, ratio }: CardProps) => {
       className="p-rel"
       sx={{
         width: "100%",
-        aspectRatio ration,
+        aspectRatio ratio,
         borderRadius: "16px",
         pt: 3.5,
         px: 2,
@@ -172,7 +172,7 @@ export const LuiCard = ({ children, shadow, ratio }: CardProps) => {
         display: "flex",
         flexFlow: "column",
         gap: 2,
-        height "fit-content", 
+        height:"auto", 
         //backdropFilter: "blur(5px)",
       }}
     >
