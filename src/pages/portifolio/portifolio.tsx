@@ -25,6 +25,7 @@ import {
   LuiText,
   Section,
   LuiButton,
+  LuiNavigation
 } from "../../common/lui/material";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import {
@@ -113,9 +114,7 @@ const Portifolio = ({ group }: { group?: boolean }) => {
   };
   return (
     <Box className="" sx={{ pt: 10, minHeight:{xs:"100vh"} }}>
-      <Box className="" sx={{ py: 2 }}>
-        <ArrowBackRounded onClick={() => navigate("/")} />
-      </Box>
+      <LuiNavigation link="/" action="back"/>
       <Box sx={{ display: "flex", flexFlow: "column", gap: 4, px: 3, py: 2 }}>
         <LuiHeadText text={head} />
         <LuiText text={subhead} />

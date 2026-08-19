@@ -36,14 +36,12 @@ const Welcome = ({ data }: { data: any }) => {
 
   const variant = {
     container: {
-      backgroundImage: "linear-gradient(to top,  #12121290, transparent)",
       color: "primary.contrastText",
-      justifyContent: { xs: "space-between", sm: "none !important" },
       px: 2,
       pt: { xs: 12, sm: 12 },
       pb: 4,
-      minHeight: "100vh",
-      flexFlow: { xs: "column" },
+      height: "100%",
+   
     },
   };
 
@@ -85,8 +83,8 @@ const Welcome = ({ data }: { data: any }) => {
     <Box className="">
       <LuiBgImage image={bgimages[i]} parallax>
         <Box className="denug" sx={variant.container}>
-          <LuiCard ratio={3 / 4.3} shadow>
-            <>
+          <LuiCard shadow>
+            <Box>
               <LuiHeadText
                 text={info.maintext}
                 color="primary.contrastText"
@@ -113,7 +111,7 @@ const Welcome = ({ data }: { data: any }) => {
                   onClick={() => navigate("/contact")}
                 />
               </Stack>
-            </>
+            </Box>
           </LuiCard>
           <Box className="" sx={{ pt: 4 }}>
             <LuiHeadText
