@@ -24,11 +24,13 @@ import {
   LuiCardMedia,
   LuiContactButton,
   LuiHeadText,
+  LuiNavigation,
   LuiText,
   Section,
 } from "../../common/lui/material";
 import { ArrowBackRounded, Send } from "@mui/icons-material";
 import RedAppleName from "../../common/lui/redapplename";
+
 
 interface ContactProps {
   data: Record<string, string[]>;
@@ -95,9 +97,7 @@ const ContactPage = ({ disableLocation }: { disableLocation?: boolean }) => {
         pb: 4,
       }}
     >
-      <Box className="" sx={{ py: 2, display: disableLocation && "none" }}>
-        <ArrowBackRounded onClick={() => navigate("/")} />
-      </Box>
+      <LuiNavigation action="back" link="/" />
       <Box sx={{ display: "flex", flexFlow: "column", gap: 4, py: 2 }}>
         <LuiHeadText text={!disableLocation ? heading : head} />
         <LuiText text={!disableLocation ? cta : subhead} />
