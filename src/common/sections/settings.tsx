@@ -19,6 +19,7 @@ import RFQs from "./rfqs";
 import Footer from "./footer";
 import { useOutletContext } from "react-router-dom";
 import Portifolio from "../../pages/portifolio/portifolio";
+import Gallery from "../../pages/galley/gallery";
 
 
 
@@ -26,9 +27,7 @@ const Settings = () => {
   const data = useOutletContext();
   return (
     <Box sx={{ pt: 8 }}>
-      <Typography>Settings </Typography>
-      <Footer data={data} />
-      <Portifolio/>
+      <Gallery/>
     </Box>
   );
 };

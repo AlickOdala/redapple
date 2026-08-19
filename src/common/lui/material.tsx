@@ -90,11 +90,16 @@ interface BulleteTextProp {
   gs?: number;
   bgcolor?: string;
   setClicked?: Dispatch<SetStateAction<string>>;
-  color?: strong;
+  color?: string;
+}
+
+interface GalleryViewer {
+  srcset: string;
 }
 
 //================================================================================
-//. Layoput Compontent | HeadText | Text | Card | Section | Bollets
+//. Layoput Compontent | HeadText | Text | Card | Section | Bollets | Galley Viewer
+//================================================================================
 export const LuiHeadText = ({
   center = false,
   fx = 28,
@@ -125,6 +130,7 @@ export const LuiHeadText = ({
   );
 };
 
+//===== Text ======
 export const LuiText = ({
   center = false,
   fx = 20,
@@ -160,7 +166,7 @@ export const LuiCard = ({ children, shadow, ratio }: CardProps) => {
       className="p-rel"
       sx={{
         width: "100%",
-        aspectRatio: { xs: !ratio ? 3 / 3.2 : ratio, sm:9/5 },
+        aspectRatio: { xs: !ratio ? 3 / 3.2 : ratio, sm: 9 / 5 },
         borderRadius: "16px",
         pt: 3.5,
         px: 2,
@@ -172,7 +178,7 @@ export const LuiCard = ({ children, shadow, ratio }: CardProps) => {
         display: "flex",
         flexFlow: "column",
         gap: 2,
-        height: {sm:"auto"}
+        height: { sm: "auto" },
         //backdropFilter: "blur(5px)",
       }}
     >
@@ -294,8 +300,32 @@ export const LuiBulleteText = ({
     </Grid>
   );
 };
+
+export const LuiGalleryViewer = ({ srcset }: GalleryViewer) => {
+  const theme: Theme = useTheme();
+  const xs = useMediaQuery(theme.breakpoints.only("xs"), { noSsr: true });
+  const sm = useMediaQuery(theme.breakpoints.only("sm"), { noSsr: true });
+  const cols = xs ? 2 : sm ? 3 : 4;
+
+  return (
+    <ImageList
+      variant="masonry"
+      gap={8}
+      cols={cols}
+      sx={{
+        height: "auto !important",
+        px: 2,
+      }}
+    >
+      {RandomPick(srcset, 10).map((src, i) => (
+        <LuiImage src={src.src} i={i} />
+      ))}
+    </ImageList>
+  );
+};
 //================================================================================
 // .Media componets | Card | Images
+// ===============================================================================
 export const LuiCardMedia = ({
   onClick,
   src,

@@ -1,4 +1,12 @@
-import { Close, DataExploration } from "@mui/icons-material";
+import {
+  ArrowBack,
+  Close,
+  DataExploration,
+  DesignServices,
+  Home,
+  PhotoCamera,
+  VideoCameraBack,
+} from "@mui/icons-material";
 import {
   Box,
   Grid,
@@ -7,26 +15,19 @@ import {
   Dialog,
   Card,
   ImageListItem,
+  IconButton,
+  Toolbar,
+  Collapse,
 } from "@mui/material";
 
 import React, { useEffect, useState, useRef } from "react";
-import {
-  TextIcon,
-  HeadText,
-  DataSelector,
-  LuiImage,
-  Loading,
-  ActionButton,
-} from "../../common/lui/lixmaterial";
-import { useTheme, Theme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import RedAppleName from "../../common/lui/redapplename";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import ReactPlayer from "react-player";
-import RandomPick from "../../../scripts/randomPick";
-import FilterEngine from "../../../scripts/filterengine";
-
- 
+import {
+  LuiGalleryViewer,
+  LuiHeadText,
+  LuiNavigation,
+} from "../../common/lui/material";
+import { Image } from "mui-image";
 interface MediaItem {
   id: number | string;
   name: string;
@@ -46,285 +47,111 @@ interface RawAssets {
 interface FlatGallery {
   [category_service: string]: MediaItem[];
 }
-
 interface GalleryContainerProps {
   images: MediaItem[];
   services: string[];
 }
 
 const Gallery = () => {
-  const rawAssets = useOutletContext<RawAssets>() || {};
-  const assets = rawAssets.services || {};
-  const [isOpen, setIsOpen] = useState(true);
-  const [services, setServices] = useState<string[]>(["Service Categories"]);
-  const [gallery, setGallery] = useState<FlatGallery>({}); //del
-  const [inView, setInView] = useState<FlatGallery>({});
-  const [toFilter, setToFilter] = useState("Service Categories");
-  const navigate = useNavigate();
-  const theme = useTheme();
-  const dataRef = useRef<any>(null);
+  const [gallery, setGallery] = useState("");
 
-  const handleClick = () => {
-    setIsOpen(!isOpen);
-    navigate("/");
+  const data = useOutletContext();
+  const images = data.services ?? "";
+  const categories = Object.keys(images);
+  const [category, setCategory] = useState("All");
+  const [open, setOpen] = useState(null);
+
+  const hundleToggle = (key:string) => {
+    setOpen(open === key ? key : null)
   };
 
+  const handleImages = () => {
+    const imageset = Object.entries(data.services);
+    const category = "photography".toLowerCase();
+
+    const imageIn = imageset.map(([cat, serv]) => {
+      if (cat.toLowerCase() === category) return Object.entries(serv);
+    });
+    console.log(imageIn.filter(Boolean));
+    return imageIn.filter(Boolean);
+  };
   useEffect(() => {
-    if (assets && Object.keys(assets).length > 0) {
-      const flattened: FlatGallery = {};
-      const serviceToItem: string[] = []; //del
-      const filterService: string[] = [];
+    const images = handleImages();
+    setGallery(images);
+  }, [10]);
 
-      Object.entries(assets).forEach(([category, catData]) => {
-        Object.entries(catData).forEach(([serviceName, items]) => {
-          const key = serviceName;
-          const cKey = category;
-          filterService.push(key);
-          if (toFilter === "Service Categories") {
-            serviceToItem.push(cKey);
-            flattened[cKey] = items;
-          } else if (key === toFilter) {
-            serviceToItem.push(key);
-            flattened[key] = items;
-            setInView({});
-          }
-        });
-        dataRef.current = flattened;
-      });
-      if (dataRef.current) {
-        setInView(dataRef.current);
-        console.log("catching in data ref", dataRef.current);
-      }
-
-      setServices(["Service Categories", ...filterService]);
-      setInView({});
-      setInView(flattened);
-    }
-  }, [toFilter, assets]);
+  useEffect(() => {
+    console.log(gallery);
+  });
 
   return (
-    <Dialog open={isOpen} fullScreen onClose={() => setIsOpen(!isOpen)}>
-      <Grid
-        container
-        className="vh center-items "
-        spacing={1}
-        sx={{ width: "100%", p: 2 }}
-      >
-        {/* header */}
-        <Grid
-          container
-          className=""
-          size={{ xs: 12 }}
-          sx={{ height: "auto" }}
-          column={2}
-        >
-          <Box className="grow " sx={{}}>
-            <RedAppleName fs={18} />
-          </Box>{" "}
-          <Box className=" grow right center-items">
-            <Close onClick={handleClick} />
-          </Box>
-        </Grid>
-        {/* body */}
-        <Grid
-          className="p-rel "
-          size={{ xs: 12, sm: 2 }}
+    <Box sx={{ pt: 2, minHeight: "100%" }}>
+      <Box sx={{ px: 2, py: 1, position: "sticky", top: 60, zIndex: 10 }}>
+        <Box
+          className="center-items p-rel"
           sx={{
-            height: { xs: "auto", sm: "90vh", borderRight: "0.5px solid" },
+            height: 50,
+            borderRadius: "50px",
+            border: "0.5px solid white",
+            boxShadow: 3,
+            boxSizing: "border-box",
+            p: 1,
+            backdropFilter: "blur(10px)",
           }}
         >
-          <Stack className="fh" sx={{ pr: 1 }}>
-            <Box
-              className="gebug center-items "
-              sx={{
-                alignIte: "center",
-                position: "sticky !important",
-                top: "0px",
-                zIndex: 10,
-                display: { sm: "none" },
-              }}
-            >
-              <DataSelector toFilter={services} bolder filtered={setToFilter} />
-            </Box>
-            <Box
-              className="center-self center-items grow"
-              sx={{
-                display: { xs: "none", sm: "flex" },
-                flexFlow: "column",
-                gap: 1,
-              }}
-            >
-              <Box className="">
-                <HeadText text="Filter By:" center fs={14} />
-              </Box>
+          <Stack direction="row" sx={{ gap: 0.5, py: 1 }}>
+            <IconButton>
+              <ArrowBack />
+            </IconButton>
+            {categories.map((cat) => (
+              <IconButton onClick={() => setCategory(cat)}>
+                <LuiHeadText text={cat} fx={12} />
+              </IconButton>
+            ))}
+          </Stack>
+        </Box>
+      </Box>
+      {Object.entries(images).map(([categories, services]) => {
+        if (categories.toLowerCase() === category.toLowerCase()) {
+          return (
+            <Box className="debug" sx={{ py: 4 }}>
+              {Object.entries(services).map(([service, images]) => (
+                <Box className="debug" sx={{ py: 2 }}>
+                  <Box
+                    className="debug"
+                    sx={{ mx: 2 }}
+                    onClick={() => hundleToggle(service)}
+                  >
+                    <LuiHeadText text={service} center fx={18} />
+                  </Box>
+                  <Collapse in={open === service}>
+                  <LuiGalleryViewer srcset={images} />
+                  </Collapse>
 
-              {services.map((service, i) => (
-                <Box className="">
-                  <ActionButton
-                    text={service}
-                    bgcolor="transparent"
-                    onClick={() => {
-                      setToFilter(!service ? "Service Categories" : service);
-                    }}
-                  />
                 </Box>
               ))}
             </Box>
-            <Box
-              className=" center-self p-rel"
-              sx={{
-                padding: "20% 0 !important",
-                display: { xs: "none", sm: "flex" },
-                flexDirection: "column",
-                gap: 1,
-              }}
-            ></Box>
-          </Stack>
-        </Grid>
-        <Grid
-          className=" scroll"
-          size={{ xs: 12, sm: 10 }}
-          spacing={1}
-          sx={{
-            height: { xs: "88%", sm: "92vh" },
-            gap: 4,
-            display: "flex",
-            flexFlow: "column",
-            p: 1,
-          }}
-        >
-          {Object.keys(inView).length === 0 ? (
-            <HeadText fs={14} center text="No items found" />
-          ) : (
-            Object.entries(inView).map(([service, data], i) => (
-              <GalleryContainer key={service} service={service} images={data} />
-            ))
-          )}
-        </Grid>
-      </Grid>
-    </Dialog>
-  );
-}; 
-
-const GalleryContainer = ({ images, service, key }: GalleryContainerProps) => {
-  const [imageToView, setImageToView] = useState<string[]>([]);
-  const [playingId, setPlayingId] = useState<string | null>(null);
-  const theme: Theme = useTheme();
-  const [loaded, setLoaded] = useState({});
-
-  //Media Queries
-  const xs = useMediaQuery(theme.breakpoints.only("xs"), { noSsr: true });
-  const sm = useMediaQuery(theme.breakpoints.only("sm"), { noSsr: true });
-  const cols = xs ? 2 : sm ? 3 : 4;
-
-  useEffect(() => {
-    setImageToView(RandomPick(images, 10));
-  }, [images]);
-
-  const handlePlay = (uid: string) => {
-    setPlayingId((prev) => (prev === uid ? null : uid));
-  };
-
-  return (
-    <Box
-      className=""
-      sx={{
-        borderRadius: "16px !important",
-        padding: "8px",
-        boxShadow: 3,
-      }}
-    >
-      <Box className="" sx={{ padding: "0 0 4px" }}>
-        <HeadText fs={18} center text={service} />
-      </Box>
-      <ImageList
-        variant="masonry"
-        className=""
-        gap={8}
-        cols={cols}
-        sx={{
-          height: "auto !important",
-          padding: "4px 0 0",
-        }}
-      >
-        {imageToView.map((item: string, i: number) => {
-          if (item.ext === "webp") {
-            return (
-              <LuiImage
-                src={item}
-                i={i}
-                key={i}
-                srcset={imageToView}
-                cover={false}
-              />
-            );
-          } else if (item.ext === "mp4") {
-            return (
-              <ImageListItem
-                key={i}
-                className=""
-                sx={{ marginBottom: "8px !important" }}
-              >
-                <Card
-                  className=""
-                  sx={{
-                    bgcolor: "#1f1f1f",
-                    marginBottom: "8px",
-                    borderRadius: "4px",
-                    overflow: "hidden",
-                  }}
-                >
-                  <Box
-                    className="center-items"
-                    sx={{
-                      position: "relative",
-                      marginBottom: "8px",
-                      objectFit: "fill",
-                      objectPosition: "center",
-                    }}
-                  >
-                    <ReactPlayer
-                      key={i}
-                      src={item.src}
-                      width="100%"
-                      height="100%"
-                      style={{ top: "0", left: "0" }}
-                      playing={playingId === item.id}
-                      controls={playingId === item.id}
-                      alt={`${service}-${item.name}`}
-                      muted
-                      loop
-                      playsinline
-                      //light={{item.poster || true}}
-                      onClick={() => handlePlay(item.id)}
-                      onReady={() => {
-                        //setLoaded((s) => ({ ...s, [item.id]: true }))
-                      }}
-                      config={{
-                        file: { attributes: { preload: "metadata" } },
-                        youtube: {
-                          playerVars: {
-                            modestbranding: 1,
-                            rel: 0,
-                            showinfo: 0,
-                            controls: 0,
-                            fs: 1,
-                          },
-                        },
-                      }}
-                    />
-                  </Box>
-                </Card>
-              </ImageListItem>
-            );
-          }
-        })}
-        {Array.from({ length: 10 % 4 === 0 ? 0 : 4 - (10 % 4) }).map((_, i) => (
-          <Box key={`empty-${i}`} />
-        ))}
-      </ImageList>
+          );
+        }
+        if (category.toLowerCase() === "all") {
+          return (
+            <Box className="debug" sx={{ py: 4 }}>
+              {Object.values(services).map((images) => (
+                <Box className="debug" sx={{ py: 2 }}>
+                  <LuiGalleryViewer srcset={images} />
+                </Box>
+              ))}
+            </Box>
+          );
+        }
+      })}
     </Box>
   );
 };
+//
 
 export default Gallery;
+
+/**
+ *
+ */
