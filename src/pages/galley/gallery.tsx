@@ -114,17 +114,17 @@ const Gallery = () => {
       {Object.entries(images).map(([categories, services]) => {
         if (categories.toLowerCase() === category.toLowerCase()) {
           return (
-            <Box className="debug" sx={{ py: 4 }}>
+            <Box className="" sx={{ py: 4 }}>
               {Object.entries(services).map(([service, images]) => (
-                <Box className="debug" sx={{ py: 2 }}>
+                <Box className="" sx={{ py: 2 }}>
                   <Box
-                    className="debug"
+                    className=""
                     sx={{ mx: 2 }}
                     onClick={() => hundleToggle(service)}
                   >
                     <LuiHeadText text={service} center fx={18} />
                   </Box>
-                  <Collapse in={open === service}>
+                  <Collapse in={service === service}>
                   <LuiGalleryViewer srcset={images} />
                   </Collapse>
 
@@ -135,9 +135,9 @@ const Gallery = () => {
         }
         if (category.toLowerCase() === "all") {
           return (
-            <Box className="debug" sx={{ py: 4 }}>
+            <Box className="" sx={{ py: 4 }}>
               {Object.values(services).map((images) => (
-                <Box className="debug" sx={{ py: 2 }}>
+                <Box className="" sx={{ py: 2 }}>
                   <LuiGalleryViewer srcset={images} />
                 </Box>
               ))}
