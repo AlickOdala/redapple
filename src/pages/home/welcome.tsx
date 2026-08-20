@@ -27,7 +27,8 @@ import {
   LuiBulleteText,
 } from "../../common/lui/material";
 import { useNavigate } from "react-router-dom";
-
+import { VibrationX } from "../../common/lui/lui-motion";
+import image from "../../assets/webuse/loading/loading.webp";
 const Welcome = ({ data }: { data: any }) => {
   const bgimages = [bg1, bg2, bg3];
   const [i, setI] = useState(RandomNumber(0, bgimages.length));
@@ -38,10 +39,13 @@ const Welcome = ({ data }: { data: any }) => {
     container: {
       color: "primary.contrastText",
       px: 2,
-      pt: { xs: 12, sm: 12 },
-      pb: 4,
-      height: "100%",
-   
+      pt: 8,
+      pb: 2,
+      height: { xs: "100vh", sm: "100%" },
+      display: "flex",
+      flexFlow: "column",
+      gap: 2,
+      justifyContent: "space-around",
     },
   };
 
@@ -73,27 +77,78 @@ const Welcome = ({ data }: { data: any }) => {
   useEffect(() => {
     const setinterval = setInterval(() => {
       setIndex((prev) => (prev + 1) % tagline.length);
-    }, 6000);
+    }, 8000);
 
     setinterval;
     return () => clearInterval(setinterval);
   }, [index]);
 
+  const links = [
+    { name: "Contacts", link: "/contact" },
+    { name: "Gallery", link: "/gallery" },
+    { name: "Portifolio", link: "/portifolio" },
+  ];
+
+  const text = [
+    "Our Goals",
+    "Our Vissions",
+    "Find Our Services",
+    "Book Online",
+    "View Our Sumples",
+    " Do Not Forgat! Contact Us.",
+  ];
+
   return (
-    <Box className="">
+    <Box>
       <LuiBgImage image={bgimages[i]} parallax>
-        <Box className="denug" sx={variant.container}>
-          <LuiCard shadow>
+        <Box sx={variant.container}>
+          <Box sx={{ py: 1, zIndex: 10 }}>
+            <Box
+              className="center-items p-rel"
+              sx={{
+                height: 50,
+                borderRadius: "50px",
+                border: "0.2px solid #ffffff63",
+                boxShadow: 3,
+                boxSizing: "border-box",
+                p: 1,
+                backdropFilter: "blur(8px)",
+              }}
+            >
+              <Stack
+                direction="row"
+                sx={{
+                  gap: 0.5,
+                  py: 1,
+                  justifyContent: { xs: "center", sm: "left" },
+                }}
+              >
+                {links.map((link) => (
+                  <IconButton onClick={() => navigate(link.link)}>
+                    <LuiHeadText
+                      text={link.name}
+                      fx={16}
+                      color="secondary.main"
+                    />
+                  </IconButton>
+                ))}
+              </Stack>
+            </Box>
+          </Box>
+          <LuiCard shadow h={{ xs: 46, sm: "auto" }}>
             <Box>
-              <LuiHeadText
-                text={info.maintext}
-                color="primary.contrastText"
-                fx={32}
-              />
+              <VibrationX>
+                <LuiHeadText
+                  text={info.maintext}
+                  color="primary.contrastText"
+                  fx={32}
+                />
+              </VibrationX>
               <LuiText
                 text={info.subtext}
                 color="primary.contrastText"
-                fx={24}
+                fx={22}
+                fm={0.9}
               />
 
               <Stack
@@ -104,45 +159,56 @@ const Welcome = ({ data }: { data: any }) => {
                   text="Read More"
                   onClick={() => navigate("/about")}
                 />
-                <LuiButton
-                  text="Contact"
-                  bgcolor="trasnparent"
-                  txtcolor="white"
-                  onClick={() => navigate("/contact")}
-                />
               </Stack>
             </Box>
           </LuiCard>
-          <Box className="" sx={{ pt: 4 }}>
+
+          <Box sx={{ px: 4 }}>
             <LuiHeadText
               text={info.trusties.maintext}
               color="primary.contrastText"
               fx={16}
               center
             />
-          </Box>
 
-          <LuiBulleteText
-            texts={info.trusties.brands}
-            color="secondary.contrastText"
-            bgcolor="secondary.main"
-          />
+            <LuiBulleteText
+              texts={info.trusties.brands}
+              color="secondary.contrastText"
+              bgcolor="secondary.main"
+            />
+          </Box>
         </Box>
       </LuiBgImage>
       <Section text={"About"}>
         <>
           <LuiHeadText text={info.about} />
-
           <LuiText text={info.aboutSubtex} />
-          <LuiCardMedia />
+
+          <LuiCard ratio={{ xs: 3 / 2, sm: 9 / 3 }}>
+            <>
+              <LuiText text={"Find More About Us."} />
+              <motion.div
+                key={index}
+                initial={{ x: 300 }}
+                animate={{ x: 0 }}
+                transition={{
+                  duration: 0.5,
+                  //repeat: Infinity,
+                  //repeatType: "loop",
+                  repeatDelay: 5,
+                  type: "pring",
+                  stiffness: 800,
+                }}
+              >
+                <Box className="center">
+                  <LuiHeadText text={text[index]} center />
+                </Box>
+              </motion.div>
+            </>
+          </LuiCard>
 
           <Box className="center-items" sx={{ py: 2 }}>
-            <LuiButton
-              text="See About US"
-              bgcolor="trasnparent"
-              //txtcolor="white"
-              onClick={() => navigate("/about")}
-            />
+            <LuiButton text="See About US" onClick={() => navigate("/about")} />
           </Box>
         </>
       </Section>

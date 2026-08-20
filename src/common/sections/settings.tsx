@@ -27,7 +27,7 @@ const Settings = () => {
   const data = useOutletContext();
   return (
     <Box sx={{ pt: 8 }}>
-      <Gallery/>
+      
     </Box>
   );
 };

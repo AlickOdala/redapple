@@ -23,11 +23,14 @@ import {
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import {
+  LuiCollapse,
   LuiGalleryViewer,
   LuiHeadText,
   LuiNavigation,
+  LuiText,
 } from "../../common/lui/material";
 import { Image } from "mui-image";
+
 interface MediaItem {
   id: number | string;
   name: string;
@@ -58,11 +61,11 @@ const Gallery = () => {
   const data = useOutletContext();
   const images = data.services ?? "";
   const categories = Object.keys(images);
-  const [category, setCategory] = useState("All");
+  const [category, setCategory] = useState(categories[0]);
   const [open, setOpen] = useState(null);
 
-  const hundleToggle = (key:string) => {
-    setOpen(open === key ? key : null)
+  const hundleToggle = (key: string) => {
+    setOpen(open === key ? key : null);
   };
 
   const handleImages = () => {
@@ -78,11 +81,7 @@ const Gallery = () => {
   useEffect(() => {
     const images = handleImages();
     setGallery(images);
-  }, [10]);
-
-  useEffect(() => {
-    console.log(gallery);
-  });
+  }, []);
 
   return (
     <Box sx={{ pt: 2, minHeight: "100%" }}>
@@ -100,9 +99,7 @@ const Gallery = () => {
           }}
         >
           <Stack direction="row" sx={{ gap: 0.5, py: 1 }}>
-            <IconButton>
-              <ArrowBack />
-            </IconButton>
+            <LuiNavigation action="back" link="/"/>
             {categories.map((cat) => (
               <IconButton onClick={() => setCategory(cat)}>
                 <LuiHeadText text={cat} fx={12} />
@@ -111,40 +108,34 @@ const Gallery = () => {
           </Stack>
         </Box>
       </Box>
+
+      <LuiHeadText text={category} center />
       {Object.entries(images).map(([categories, services]) => {
         if (categories.toLowerCase() === category.toLowerCase()) {
           return (
-            <Box className="" sx={{ py: 4 }}>
-              {Object.entries(services).map(([service, images]) => (
-                <Box className="" sx={{ py: 2 }}>
-                  <Box
-                    className=""
-                    sx={{ mx: 2 }}
-                    onClick={() => hundleToggle(service)}
+            <Box className="" sx={{ px: 2 }}>
+              {Object.entries(services).map(([service, images], i) => (
+                <Box className="" sx={{}}>
+                  <LuiCollapse
+                    key={`${i}_${service}`}
+                    container
+                    services={service}
                   >
-                    <LuiHeadText text={service} center fx={18} />
-                  </Box>
-                  <Collapse in={service === service}>
-                  <LuiGalleryViewer srcset={images} />
-                  </Collapse>
-
-                </Box>
-              ))}
-            </Box>
-          );
-        }
-        if (category.toLowerCase() === "all") {
-          return (
-            <Box className="" sx={{ py: 4 }}>
-              {Object.values(services).map((images) => (
-                <Box className="" sx={{ py: 2 }}>
-                  <LuiGalleryViewer srcset={images} />
+                    <LuiGalleryViewer srcset={images} />
+                  </LuiCollapse>
                 </Box>
               ))}
             </Box>
           );
         }
       })}
+      <Box sx={{ px: 2, py: 1 }}>
+        <LuiText
+          text={`The ${category} of heigh quality and delivered in time.`}
+          center
+          fx={14}
+        />
+      </Box>
     </Box>
   );
 };
@@ -153,5 +144,18 @@ const Gallery = () => {
 export default Gallery;
 
 /**
- *
+ *<Box className="debug" sx={{ px: 2, pb: 2 }}>
+                    <Box
+                      sx={{
+                        borderTop: "0.4px solid",
+                        borderBottom: "0.4px solid",
+                      }}
+                    >
+                      <LuiHeadText text={service} fx={14} center />
+                    </Box>
+                  </Box>
+
+                  <Collapse in={service === service}>
+                    
+                  </Collapse>
  */

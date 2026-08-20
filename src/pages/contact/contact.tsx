@@ -30,7 +30,7 @@ import {
 } from "../../common/lui/material";
 import { ArrowBackRounded, Send } from "@mui/icons-material";
 import RedAppleName from "../../common/lui/redapplename";
-
+import { VibrationX, ZInMotion } from "../../common/lui/lui-motion";
 
 interface ContactProps {
   data: Record<string, string[]>;
@@ -88,168 +88,179 @@ const ContactPage = ({ disableLocation }: { disableLocation?: boolean }) => {
   };
 
   return (
-    <Box
-      className=""
-      sx={{
-        pt: !disableLocation && 10,
-        px: !disableLocation && 2,
-        minHeight: { xs: "100vh" },
-        pb: 4,
-      }}
-    >
-      <LuiNavigation action="back" link="/" />
-      <Box sx={{ display: "flex", flexFlow: "column", gap: 4, py: 2 }}>
-        <LuiHeadText text={!disableLocation ? heading : head} />
-        <LuiText text={!disableLocation ? cta : subhead} />
-      </Box>
+    <ZInMotion>
+      <Box
+        className=""
+        sx={{
+          pt: !disableLocation && 10,
+          px: !disableLocation && 2,
+          minHeight: { xs: "100vh" },
+          pb: 4,
+        }}
+      >
+        {!disableLocation && (<LuiNavigation action="back" link="/" />)}
+        
+        <Box sx={{ display: "flex", flexFlow: "column", gap: 4, py: 2 }}>
+          <VibrationX>
+            <LuiHeadText text={!disableLocation ? heading : head} />
+          </VibrationX>
+          <LuiText text={!disableLocation ? cta : subhead} />
+        </Box>
 
-      <Box component="form" className="" onSubmit={hundleSubmit}>
-        <input type="checkbox" name="botcheck" style={{ display: "none" }} />
-        <Grid
-          container
-          //sx={{ aspectRatio: { xs: 3 / 5 } }}
-          spacing={1}
-        >
+        <Box component="form" className="" onSubmit={hundleSubmit}>
+          <input type="checkbox" name="botcheck" style={{ display: "none" }} />
           <Grid
-            size={{ xs: 12, sm: 6 }}
-            sx={{ height: "fit-content", borderBottom: "1px solid grey" }}
+            container
+            //sx={{ aspectRatio: { xs: 3 / 5 } }}
+            spacing={1}
           >
-            <LuiHeadText text="Enter Email" fx={14} fm={1.5} />
-            <TextField
-              placeholder="@gmail.com"
-              type="email"
-              fullWidth
-              name="email"
-              required
-              sx={{ mb: 2 }}
-            />
+            <Grid
+              size={{ xs: 12, sm: 6 }}
+              sx={{ height: "fit-content", borderBottom: "1px solid grey" }}
+            >
+              <LuiHeadText text="Enter Email" fx={14} fm={1.5} />
+              <TextField
+                placeholder="@gmail.com"
+                type="email"
+                fullWidth
+                name="email"
+                required
+                sx={{ mb: 2 }}
+              />
+            </Grid>
+            <Grid
+              size={{ xs: 12, sm: 6 }}
+              sx={{ height: "fit-content", borderBottom: "1px solid grey" }}
+            >
+              <LuiHeadText text="Your Phone Number" fx={14} fm={1.5} />
+              <TextField
+                placeholder="+265888000000"
+                type="text"
+                fullWidth
+                name="phone"
+                required
+                sx={{ mb: 2 }}
+              />
+            </Grid>
+            <Grid
+              size={{ xs: 12 }}
+              sx={{ height: "fit-content", borderBottom: "1px solid grey" }}
+            >
+              <LuiHeadText text="Company or Your Name" fx={14} fm={1.5} />
+              <TextField
+                placeholder="Redapple / Alex"
+                type="text"
+                fullWidth
+                name="name"
+                required
+                sx={{ mb: 2 }}
+              />
+            </Grid>
+            <Grid
+              size={{ xs: 12 }}
+              sx={{ height: "fit-content", borderBottom: "1px solid grey" }}
+            >
+              <LuiHeadText text="What is Required Service" fx={14} fm={1.5} />
+              <TextField
+                placeholder="eg. Documentary.... Wedding"
+                type="text"
+                fullWidth
+                name="service"
+                required
+                sx={{ mb: 2 }}
+              />
+            </Grid>
+            <Grid
+              size={{ xs: 6 }}
+              sx={{ height: "fit-content", borderBottom: "1px solid grey" }}
+            >
+              <LuiHeadText text="Location" fx={14} fm={1.5} />
+              <TextField
+                placeholder="eg. Blanytre-Golden Hills"
+                type="text"
+                fullWidth
+                name="location"
+                required
+                sx={{ mb: 2 }}
+              />
+            </Grid>
+            <Grid
+              size={{ xs: 6 }}
+              sx={{ height: "fit-content", borderBottom: "1px solid grey" }}
+            >
+              <LuiHeadText text="Pick Date" fx={14} fm={1.5} />
+              <TextField
+                placeholder="yy/mm/dd"
+                name="date"
+                fullWidth
+                type="datetime-local"
+                required
+                sx={{ mb: 2 }}
+              />
+            </Grid>
+            <Grid
+              size={{ xs: 12 }}
+              sx={{
+                height: "fit-content",
+                borderBottom: "1px solid grey",
+                boxSizing: "content-box",
+              }}
+            >
+              <LuiHeadText text="Leave Addional Message" fx={14} fm={1.5} />
+              <TextField
+                className=""
+                placeholder="What are you planning?"
+                fullWidth
+                multiline
+                rows={4}
+                sx={{ mt: 2 }}
+              />
+            </Grid>
           </Grid>
-          <Grid
-            size={{ xs: 12, sm: 6 }}
-            sx={{ height: "fit-content", borderBottom: "1px solid grey" }}
+          <Box className="" sx={{ py: 2 }}>
+            <LuiButton
+              text={loading ? "sending..." : "Send Now"}
+              type="submit"
+            />
+          </Box>
+          <Snackbar
+            open={toast.open}
+            autoHideDuration={4000}
+            onClose={() => setToast({ ...toast, open: false })}
           >
-            <LuiHeadText text="Your Phone Number" fx={14} fm={1.5} />
-            <TextField
-              placeholder="+265888000000"
-              type="text"
-              fullWidth
-              name="phone"
-              required
-              sx={{ mb: 2 }}
-            />
-          </Grid>
-          <Grid
-            size={{ xs: 12 }}
-            sx={{ height: "fit-content", borderBottom: "1px solid grey" }}
-          >
-            <LuiHeadText text="Company or Your Name" fx={14} fm={1.5} />
-            <TextField
-              placeholder="Redapple / Alex"
-              type="text"
-              fullWidth
-              name="name"
-              required
-              sx={{ mb: 2 }}
-            />
-          </Grid>
-          <Grid
-            size={{ xs: 12 }}
-            sx={{ height: "fit-content", borderBottom: "1px solid grey" }}
-          >
-            <LuiHeadText text="What is Required Service" fx={14} fm={1.5} />
-            <TextField
-              placeholder="eg. Documentary.... Wedding"
-              type="text"
-              fullWidth
-              name="service"
-              required
-              sx={{ mb: 2 }}
-            />
-          </Grid>
-          <Grid
-            size={{ xs: 6 }}
-            sx={{ height: "fit-content", borderBottom: "1px solid grey" }}
-          >
-            <LuiHeadText text="Location" fx={14} fm={1.5} />
-            <TextField
-              placeholder="eg. Blanytre-Golden Hills"
-              type="text"
-              fullWidth
-              name="location"
-              required
-              sx={{ mb: 2 }}
-            />
-          </Grid>
-          <Grid
-            size={{ xs: 6 }}
-            sx={{ height: "fit-content", borderBottom: "1px solid grey" }}
-          >
-            <LuiHeadText text="Pick Date" fx={14} fm={1.5} />
-            <TextField
-              placeholder="yy/mm/dd"
-              name="date"
-              fullWidth
-              type="datetime-local"
-              required
-              sx={{ mb: 2 }}
-            />
-          </Grid>
-          <Grid
-            size={{ xs: 12 }}
-            sx={{
-              height: "fit-content",
-              borderBottom: "1px solid grey",
-              boxSizing: "content-box",
-            }}
-          >
-            <LuiHeadText text="Leave Addional Message" fx={14} fm={1.5} />
-            <TextField
-              className=""
-              placeholder="What are you planning?"
-              fullWidth
-              multiline
-              rows={4}
-              sx={{ mt: 2 }}
-            />
-          </Grid>
+            <Alert severity={toast.type}>{toast.msg}</Alert>
+          </Snackbar>
+        </Box>
+        <LuiHeadText text={"Call or Chat With Us"} />
+        <LuiText text={"Click the buttons for direct contact"} />
+        <Grid container className="" sx={{ py: 2 }} spacing={2} columns={2}>
+          {details.slice(0, 2).map((item, i) => (
+            <LuiContactButton item={item} i={i} />
+          ))}
         </Grid>
-        <Box className="" sx={{ py: 2 }}>
-          <LuiButton text={loading ? "sending..." : "Send Now"} type="submit" />
-        </Box>
-        <Snackbar
-          open={toast.open}
-          autoHideDuration={4000}
-          onClose={() => setToast({ ...toast, open: false })}
-        >
-          <Alert severity={toast.type}>{toast.msg}</Alert>
-        </Snackbar>
+        <LuiHeadText text=" find RedApple on Social media!" fx={12} />
+        {!disableLocation ? (
+          <LuiCard ratio={3 / 4.5}>
+            <>
+              <LuiHeadText text="Our Office Location" center />
+              <LuiText
+                text={"We have our office in Blantyre, Kachere"}
+                center
+              />
+              <LuiCardMedia image="/studio/studio.webp" />
+            </>
+          </LuiCard>
+        ) : (
+          <Box className="" sx={{ py: 2 }}>
+            <LuiButton
+              text="View More"
+              onClick={() => navigate("/contact")}
+              center
+            />
+          </Box>
+        )}
       </Box>
-      <LuiHeadText text={"Call or Chat With Us"} />
-      <LuiText text={"Click the buttons for direct contact"} />
-      <Grid container className="" sx={{ py: 2 }} spacing={2} columns={2}>
-        {details.slice(0, 2).map((item, i) => (
-          <LuiContactButton item={item} i={i} />
-        ))}
-      </Grid>
-      <LuiHeadText text=" find RedApple on Social media!" fx={12} />
-      {!disableLocation ? (
-        <LuiCard ratio={3 / 4.5}>
-          <>
-            <LuiHeadText text="Our Office Location" center />
-            <LuiText text={"We have our office in Blantyre, Kachere"} center />
-            <LuiCardMedia image="/studio/studio.webp" />
-          </>
-        </LuiCard>
-      ) : (
-        <Box className="" sx={{ py: 2 }}>
-          <LuiButton
-            text="View More"
-            onClick={() => navigate("/contact")}
-            center
-          />
-        </Box>
-      )}
-    </Box>
+    </ZInMotion>
   );
 };
 

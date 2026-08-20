@@ -16,7 +16,7 @@ import {
   ListItemText,
   ImageList,
 } from "@mui/material";
-import { motion } from "framer-motion";
+import { motion, motionValue } from "framer-motion";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Image } from "mui-image";
 import image from "../../assets/webuse/homebg/bg1.webp";
@@ -41,6 +41,7 @@ import { useNavigate } from "react-router-dom";
 import { useTheme, Theme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import RandomPick, { RandomNumber } from "../../../scripts/randomPick";
+import { InPage, ZInMotion } from "./lui-motion";
 
 //================================================================================
 // .Props
@@ -57,6 +58,7 @@ interface CardProps {
   children?: React.ReactElement;
   shadow?: boolean;
   ratio?: number;
+  h?: number;
 }
 interface CardMediaProp {
   onClick?: () => void;
@@ -160,86 +162,94 @@ export const LuiText = ({
   );
 };
 
-export const LuiCard = ({ children, shadow, ratio }: CardProps) => {
+export const LuiCard = ({ children, shadow, ratio, h }: CardProps) => {
   return (
-    <Paper
-      className="p-rel"
-      sx={{
-        width: "100%",
-        aspectRatio: ratio,
-        borderRadius: "16px",
-        pt: 3.5,
-        px: 2,
-        pb: 2,
-        boxShadow: !shadow ? "unset" : 3,
-        bgcolor: "transparent",
-        backgroundImage:
-          "linear-gradient(45deg, rgba(118, 44, 51, 0.15), transparent )",
-        display: "flex",
-        flexFlow: "column",
-        gap: 2,
-        height: "auto",
-        //backdropFilter: "blur(5px)",
-      }}
-    >
-      {children}
-    </Paper>
+    <InPage once>
+      <Box
+        className="p-rel"
+        sx={{
+          width: "100%",
+          aspectRatio: ratio,
+          borderRadius: "16px",
+          px: 2,
+          py: 6,
+          boxShadow: !shadow ? "unset" : 3,
+          bgcolor: "transparent",
+          backgroundImage:
+            "linear-gradient(45deg, rgba(118, 44, 51, 0.38), transparent )",
+          display: "flex",
+          flexFlow: "column",
+          gap: 2,
+          height: `${h}vh`,
+        }}
+      >
+        {children}
+      </Box>
+    </InPage>
   );
 };
 
 export const Section = ({ children, text, color }: SectinProps) => {
   return (
-    <Box
-      className="p-rel "
-      sx={{
-        height: "auto",
-        px: 2,
-        pt: !text ? 0 : 4,
-        pb: 1,
-      }}
+    <motion.div
+      layout="size"
+      initial={{ y: 40, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      transition={{ delay: 0.8, duration: 0.5, type: "spring" }}
+      viewport={{ amount: 0.2 }}
     >
-      {text && (
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          vieport={{ ammount: 1.5 }}
-          transition={{ delay: 0.5, duration: 1.5 }}
-        >
-          <Box
-            className=""
-            sx={{
-              display: "flex",
-              position: "absolute",
-              top: 18,
-              px: 1,
-              py: 0.1,
-              backdropFilter: "blur(40px)",
-              zIndex: 10,
-              borderRadius: "50px",
-            }}
-          >
-            <LuiHeadText text={text} caps fx={12} color={color} fm={0.8} />
-          </Box>
-          <Box
-            component="hr"
-            className=""
-            sx={{
-              width: "100% !important",
-              right: "10%",
-              border: "0.5px solid #2323233c !important",
-              height: "0.5px !important",
-            }}
-          />
-        </motion.div>
-      )}
-
       <Box
-        className=""
-        sx={{ pt: 4, display: "flex", flexFlow: "column", gap: 4 }}
+        className="p-rel "
+        sx={{
+          height: "auto",
+          px: 2,
+          pt: !text ? 0 : 4,
+          pb: 1,
+        }}
       >
-        {children}
+        {text && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            vieport={{ ammount: 1.5 }}
+            transition={{ delay: 0.5, duration: 1.5 }}
+          >
+            <Box
+              className=""
+              sx={{
+                display: "flex",
+                position: "absolute",
+                top: 18,
+                px: 1,
+                py: 0.1,
+                backdropFilter: "blur(40px)",
+                zIndex: 10,
+                borderRadius: "50px",
+              }}
+            >
+              <LuiHeadText text={text} caps fx={12} color={color} fm={0.8} />
+            </Box>
+            <Box
+              component="hr"
+              className=""
+              sx={{
+                width: "100% !important",
+                right: "10%",
+                border: "0.5px solid #2323233c !important",
+                height: "0.5px !important",
+              }}
+            />
+          </motion.div>
+        )}
+
+        <Box
+          className=""
+          sx={{ pt: 4, display: "flex", flexFlow: "column", gap: 4 }}
+        >
+          {children}
+        </Box>
       </Box>
-    </Box>
+    </motion.div>
   );
 };
 export const LuiBulleteText = ({
@@ -314,7 +324,6 @@ export const LuiGalleryViewer = ({ srcset }: GalleryViewer) => {
       cols={cols}
       sx={{
         height: "auto !important",
-        px: 2,
       }}
     >
       {RandomPick(srcset, 10).map((src, i) => (
@@ -644,6 +653,9 @@ interface CollapseProps {
   services?: Record<string, any>;
   showImage?: boolean;
   bgcolor?: string;
+  children?: React.ReactElement;
+  container?: boolean;
+  key?: any;
 }
 //================================================================================
 export const LuiButton = ({
@@ -712,7 +724,7 @@ export const LuiNavigation = ({
   });
 
   return (
-    <Box sx={{ py: 2, px: 2 }}>
+    <Box sx={{ py: 2 }}>
       <Box sx={{ width: 40, height: 40 }}>
         <motion.div
           whileHover={{ scale: 1.2 }}
@@ -759,181 +771,176 @@ export const LuiCollapse = ({
   services,
   showImage,
   bgcolor,
+  children,
+  container,
+  key,
 }: CollapseProps) => {
   const [open, setOpen] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleToggle = (key: string) => {
+  const handleOpen = (key: string) => {
     setOpen(open !== key ? key : null);
   };
 
-  return (
-    <Box className=" p-rel" sx={{ pt: 4 }}>
-      {Object.entries(services).map(([service, value], i) => (
-        <Grid container className="" spacing={3} key={service}>
-          <Grid className="" size={{ xs: 12, sm: 12 }}>
-            <ListItemButton
-              onClick={() => handleToggle(service)}
-              sx={{
-                bgcolor: bgcolor,
-                borderBottom: "0.5px solid grey",
-              }}
-            >
-              <ListItemText
-                primary={service}
+  if (typeof services === "object") {
+    return (
+      <Box className=" p-rel" sx={{ pt: 4 }}>
+        {Object.entries(services).map(([service, value], i) => (
+          <Grid container className="" spacing={3} key={service}>
+            <Grid className="" size={{ xs: 12, sm: 12 }}>
+              <ListItemButton
+                onClick={() => handleOpen(service)}
                 sx={{
-                  color:
-                    bgcolor !== "primary.main"
-                      ? "text.secondary"
-                      : "primary.contrastText",
-                  fontWeight: "bolder !important",
+                  bgcolor: bgcolor,
+                  borderBottom: "0.5px solid grey",
                 }}
-              />
-              <ListItemIcon>
-                {open !== service ? (
-                  <ArrowDownward
-                    sx={{
-                      color:
-                        bgcolor !== "primary.main"
-                          ? "text.secondary"
-                          : "primary.contrastText",
-                      transform: "scale(0.8)",
-                    }}
-                  />
-                ) : (
-                  <ArrowUpward
-                    sx={{
-                      color:
-                        bgcolor !== "primary.main"
-                          ? "text.secondary"
-                          : "primary.contrastText",
-                      transform: "scale(0.8)",
-                    }}
-                  />
-                )}
-              </ListItemIcon>
-            </ListItemButton>
-            <Collapse in={open === service} className="" timeout={1500}>
-              <List dense sx={{ px: 2 }}>
-                <LuiText text={value.desc ?? value} />
-                <Box
-                  className=" p-rel"
+              >
+                <ListItemText
+                  primary={service}
                   sx={{
-                    aspectRatio: { xs: 4 / 3 },
-                    borderRadius: "16px",
-                    display: !showImage && "none",
+                    color:
+                      bgcolor !== "primary.main"
+                        ? "text.secondary"
+                        : "primary.contrastText",
+                    fontWeight: "bolder !important",
                   }}
-                >
-                  <Image
-                    src={value.url ?? "/logo/logo.webp"}
-                    sx={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      objectPosition: "50% 15%",
-                      position: "absolute !important",
-                      top: 0,
-                      lef: 0,
-                      bgcolor: "rgba(130, 28, 38, 0.11)",
-                    }}
-                  />
-                </Box>
+                />
+                <ListItemIcon>
+                  {open !== service ? (
+                    <ArrowDownward
+                      sx={{
+                        color:
+                          bgcolor !== "primary.main"
+                            ? "text.secondary"
+                            : "primary.contrastText",
+                        transform: "scale(0.8)",
+                      }}
+                    />
+                  ) : (
+                    <ArrowUpward
+                      sx={{
+                        color:
+                          bgcolor !== "primary.main"
+                            ? "text.secondary"
+                            : "primary.contrastText",
+                        transform: "scale(0.8)",
+                      }}
+                    />
+                  )}
+                </ListItemIcon>
+              </ListItemButton>
+              <Collapse in={open === service} className="" timeout={1500}>
+                {!container ? (
+                  <List dense sx={{ px: 2 }}>
+                    <LuiText text={value.desc ?? value} />
+                    <Box
+                      className=" p-rel"
+                      sx={{
+                        aspectRatio: { xs: 4 / 3 },
+                        borderRadius: "16px",
+                        display: !showImage && "none",
+                      }}
+                    >
+                      <Image
+                        src={value.url ?? "/logo/logo.webp"}
+                        sx={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          objectPosition: "50% 15%",
+                          position: "absolute !important",
+                          top: 0,
+                          lef: 0,
+                          bgcolor: "rgba(130, 28, 38, 0.11)",
+                        }}
+                      />
+                    </Box>
 
-                <Box
-                  className=" right center-items"
-                  sx={{ display: !showImage && "none", py: 2 }}
-                >
-                  <LuiButton
-                    onClick={() => navigate(`/service/${service}`)}
-                    text={`${service} Services |`}
-                    bgcolor="transparent"
-                    txtcolor="text.secondary"
-                  />
-                </Box>
-              </List>
-            </Collapse>
+                    <Box
+                      className=" right center-items"
+                      sx={{ display: !showImage && "none", py: 2 }}
+                    >
+                      <LuiButton
+                        onClick={() => navigate(`/service/${service}`)}
+                        text={`${service} Services |`}
+                        bgcolor="transparent"
+                        txtcolor="text.secondary"
+                      />
+                    </Box>
+                  </List>
+                ) : (
+                  <Box>{children}</Box>
+                )}
+              </Collapse>
+            </Grid>
           </Grid>
-        </Grid>
-      ))}
-    </Box>
-  );
-};
+        ))}
+      </Box>
+    );
+  }
 
-export const LuiCollapseText = () => {
-  <Box className=" p-rel" sx={{ pt: 4 }}>
-    {Object.entries(services).map(([service, value], i) => (
-      <Grid container className="" spacing={3} key={service}>
-        <Grid className="" size={{ xs: 12, sm: 4 }}>
+  const [toggle, setToggle] = useState(null);
+
+  const handleToggle = (service: string) => {
+    setToggle(toggle !== service ? service : null);
+  };
+
+  return (
+    <Grid container className="" spacing={3} key={services} sx={{ pb: 4 }}>
+      <Grid className="" size={{ xs: 12, sm: 12 }}>
+        <motion.div
+          initial={{ x: 0 }}
+          whileTap={{ x: 4 }}
+          whileFocus={{ x: 2 }}
+        >
           <ListItemButton
-            onClick={() => handleToggle(service)}
+            onClick={() => handleToggle(services)}
             sx={{
-              bgcolor: "primary.main",
+              bgcolor: bgcolor,
               borderBottom: "0.5px solid grey",
             }}
           >
             <ListItemText
-              primary={service}
+              primary={services}
               sx={{
-                color: "primary.contrastText",
-                fontWeight: 1000,
+                color:
+                  bgcolor !== "primary.main"
+                    ? "text.secondary"
+                    : "primary.contrastText",
+                fontWeight: "bolder !important",
               }}
             />
             <ListItemIcon>
-              {open !== service ? (
+              {!toggle ? (
                 <ArrowDownward
                   sx={{
-                    color: "primary.contrastText",
+                    color:
+                      bgcolor !== "primary.main"
+                        ? "text.secondary"
+                        : "primary.contrastText",
                     transform: "scale(0.8)",
                   }}
                 />
               ) : (
                 <ArrowUpward
                   sx={{
-                    color: "primary.contrastText",
+                    color:
+                      bgcolor !== "primary.main"
+                        ? "text.secondary"
+                        : "primary.contrastText",
                     transform: "scale(0.8)",
                   }}
                 />
               )}
             </ListItemIcon>
           </ListItemButton>
-          <Collapse in={open === service} className="" timeout={1500}>
-            <List dense sx={{ px: 2 }}>
-              <LuiText text={value.desc ?? ""} />
-              <Box
-                className=" p-rel"
-                sx={{
-                  aspectRatio: { xs: 4 / 3 },
-                  borderRadius: "16px",
-                }}
-              >
-                <Image
-                  src={value.url ?? "/logo/logo.webp"}
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    objectPosition: "50% 15%",
-                    position: "absolute !important",
-                    top: 0,
-                    lef: 0,
-                    bgcolor: "rgba(130, 28, 38, 0.11)",
-                  }}
-                />
-              </Box>
-              <Box className=" right center-items" sx={{}}>
-                <LuiButton
-                  onClick={() => navigate(`/service/${service}`)}
-                  text={`${service} Services |`}
-                  bgcolor="transparent"
-                  txtcolor="text.secondary"
-                />
-              </Box>
-            </List>
-          </Collapse>
-        </Grid>
+        </motion.div>
+        <Collapse in={toggle} className="" timeout={1500}>
+          <Box sx={{ py: 2, px: 2 }}>{children}</Box>
+        </Collapse>
       </Grid>
-    ))}
-  </Box>;
+    </Grid>
+  );
 };
 
 export const LuiContactButton = ({ i, item }: { item: string; i: number }) => {

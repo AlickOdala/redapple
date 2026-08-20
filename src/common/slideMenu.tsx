@@ -15,9 +15,8 @@ const SlideMenu = ({ open, data, setOpen }: Props) => {
   const items = {
     Home: "/",
     "About Us": "/about",
-    Portfolio: "/portifolio",
     "Contact Us": "/contact",
-    Settings: "/setting",
+    Portfolio: "/portifolio",
   };
   const navigate = useNavigate();
   return (
@@ -36,37 +35,25 @@ const SlideMenu = ({ open, data, setOpen }: Props) => {
             right: 0,
             width: "100%",
           },
-          "& .MuiDrawer-root": {
-            backdropFilter: "blur(10px)",
-          },
         }}
       >
-        <Paper
-          className="grow"
-          sx={{
-            width: "100%",
-            padding: "20% 16px 0",
-            bgcolor: "transparent",
-          }}
-        >
-          <Toolbar />
-          <Stack className="center-self grow" spacing={1}>
-            {Object.entries(items).map(([name, link]) => (
-              <Box className="fv" key={name} sx={{ py: 0.5 }}>
-                <LuiButton
-                  text={name}
-                  center
-                  txtcolor="white"
-                  bgcolor="transparent"
-                  onClick={() => {
-                    navigate(link);
-                    setOpen(!open);
-                  }}
-                />
-              </Box>
-            ))}
-          </Stack>
-        </Paper>
+        <Toolbar />
+        <Stack className="center-items grow" spacing={1}>
+          {Object.entries(items).map(([name, link]) => (
+            <Box className="fv" key={name} sx={{ py: 0.5 }}>
+              <LuiButton
+                text={name}
+                center
+                txtcolor="white"
+                bgcolor="transparent"
+                onClick={() => {
+                  navigate(link);
+                  setOpen(!open);
+                }}
+              />
+            </Box>
+          ))}
+        </Stack>
       </Drawer>
     </Box>
   );

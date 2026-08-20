@@ -744,8 +744,7 @@ export const Loading = () => {
       fullScreen
       sx={{
         "& .MuiDialog-paper": {
-          // bgcolor: "transparent",
-          //color: '"primary.main',
+          bgcolor: "background.paper",
         },
       }}
     >
