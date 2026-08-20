@@ -39,9 +39,9 @@ const Welcome = ({ data }: { data: any }) => {
     container: {
       color: "primary.contrastText",
       px: 2,
-      pt: 8,
+      pt: 12,
       pb: 2,
-      height: { xs: "100vh", sm: "100%" },
+      height: { xs: "90vh", sm: "100%" },
       display: "flex",
       flexFlow: "column",
       gap: 2,
